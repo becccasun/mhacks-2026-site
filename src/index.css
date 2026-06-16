@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+@theme {
+  --color-moss: #3a4a26;
+  --color-olive: #445721;
+  --color-fern: #5d6b3a;
+  --color-sage: #bec59b;
+  --color-cream: #efe9d4;
+  --color-ink: #1f2a16;
+  --color-night: #0b0d08;
+  --color-card: #14170e;
+  --color-fog: #f0efe6;
+  --color-paper: #f4f2e8;
+  --color-haze: #e8e5d6;
+
+  --font-serif: "Instrument Serif", Georgia, serif;
+  --font-display: "Red Hat Display", system-ui, sans-serif;
+  --font-body: "Red Hat Text", system-ui, sans-serif;
+  --font-pixel: "Pixelify Sans", monospace;
+  --font-figtree: "Figtree", system-ui, sans-serif;
+  --font-mono: "Instrument Sans", system-ui, sans-serif;
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes blink {
+  0%,
+  55% {
+    opacity: 1;
+  }
+  56%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.8);
+  }
+}
+
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-moss);
+  color: var(--color-fog);
+}
