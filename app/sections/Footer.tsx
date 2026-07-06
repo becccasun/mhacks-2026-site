@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Logo } from "@/components/Logo";
 import { scrollToHash } from "@/lib/scroll";
 
@@ -11,65 +10,94 @@ const LINKS = [
   { label: "Contact", href: "mailto:hello@mhacks.org" },
 ];
 
-const MARQUEE_WORDS = [
-  "Ann Arbor",
-  "Digital Garden",
-  "Design",
-  "Fall 2026",
-  "Engineering",
-  "Coffee & Code",
-  "Building",
-];
+/* Dense film grain tile (SVG turbulence) — layered twice over the blurred
+   backdrop so it reads like sun-bleached sandy paper. */
+const GRAIN =
+  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")";
 
+/**
+ * Footer as the last sheet in the stack: rounded top corners over the
+ * newsletter section. The backdrop is a heavily blurred pastel photo under
+ * dense grain — soft pastels on sandy paper, with the pale text punching
+ * through. (The giant MHACKS 2026 wordmark is removed for now.)
+ */
 export function Footer() {
   return (
     <footer
       data-nav-theme="dark"
-      className="relative z-[8] -mt-14 md:-mt-20 overflow-hidden rounded-t-[40px] md:rounded-t-[48px] bg-moss-700 text-cream"
+      className="relative z-[10] -mt-14 md:-mt-20 overflow-hidden rounded-t-[40px] md:rounded-t-[48px] bg-moss-900 text-cream"
     >
-      {/* Marquee */}
-      <div className="border-b border-cream/10 py-6 overflow-hidden">
-        <motion.div
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ duration: 32, repeat: Infinity, ease: "linear" }}
-          className="flex whitespace-nowrap gap-16 font-serif-it text-cream/70"
-          style={{ fontSize: 48, lineHeight: 1 }}
-        >
-          {Array.from({ length: 2 }).flatMap((_, r) =>
-            MARQUEE_WORDS.map((w, i) => (
-              <span key={`${r}-${i}`} className="inline-flex items-center gap-16">
-                {w}
-                <span className="text-cream/30" aria-hidden>
-                  ✽
-                </span>
-              </span>
-            )),
-          )}
-        </motion.div>
+      {/* Sandy-pastel backdrop: pre-blurred pastel photo, a soft tint for
+          text contrast, then two passes of dense grain for the paper tooth. */}
+      <div aria-hidden className="absolute inset-0">
+        {/* Blur + grade are baked into the image — no live CSS filter, so the
+            compositor never has to rebuild a giant blurred surface mid-scroll. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/footer/footer-pastel-soft.jpg"
+          alt=""
+          draggable={false}
+          className="h-full w-full object-cover object-[68%_12%]"
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(29,36,18,0.38) 0%, rgba(29,36,18,0.24) 45%, rgba(29,36,18,0.44) 100%)",
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: GRAIN,
+            backgroundSize: "240px 240px",
+            mixBlendMode: "overlay",
+            opacity: 0.7,
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: GRAIN,
+            backgroundSize: "150px 150px",
+            opacity: 0.16,
+          }}
+        />
       </div>
 
-      <div className="px-6 md:px-[8vw] py-14 grid gap-10 md:grid-cols-[1fr_auto_1fr] items-center">
-        <Logo size={72} className="opacity-95 hover:opacity-100 md:justify-self-start" />
-        <nav className="flex flex-wrap gap-6 text-[14px] opacity-85 md:justify-center">
-          {LINKS.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              className="hover:opacity-100 hover:underline underline-offset-4 opacity-85"
-              data-cursor="hover"
-              onClick={(e) => {
-                if (l.href.startsWith("#")) {
-                  e.preventDefault();
-                  scrollToHash(l.href);
-                }
-              }}
-            >
-              {l.label}
-            </a>
-          ))}
-        </nav>
-        <div className="text-[13px] text-cream/70 font-mono md:justify-self-end md:text-right">
-          © 2026 MHacks · Ann Arbor
+      <div className="relative z-10 flex min-h-[240px] flex-col justify-center px-6 py-14 md:min-h-[280px] md:px-[8vw] md:py-16">
+        {/* Logo / pages / rights */}
+        <div className="grid items-center gap-8 md:grid-cols-[1fr_auto_1fr]">
+          <Logo
+            size={64}
+            className="justify-self-center drop-shadow-[0_2px_14px_rgba(0,0,0,0.45)] md:justify-self-start"
+          />
+
+          <nav
+            className="flex flex-wrap justify-center gap-8 text-[15px] [text-shadow:0_1px_12px_rgba(29,36,18,0.45)]"
+            aria-label="Footer"
+          >
+            {LINKS.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                data-cursor="hover"
+                className="opacity-85 transition-opacity hover:opacity-100 hover:underline underline-offset-4"
+                onClick={(e) => {
+                  if (l.href.startsWith("#")) {
+                    e.preventDefault();
+                    scrollToHash(l.href);
+                  }
+                }}
+              >
+                {l.label}
+              </a>
+            ))}
+          </nav>
+
+          <div className="justify-self-center font-mono text-[13px] text-cream [text-shadow:0_1px_12px_rgba(29,36,18,0.45)] md:justify-self-end md:text-right">
+            © MHACKS 2026 · All rights reserved
+          </div>
         </div>
       </div>
     </footer>

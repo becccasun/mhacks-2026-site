@@ -26,61 +26,112 @@ export function About() {
           y: tabY,
           borderTopLeftRadius: 48,
           borderTopRightRadius: 48,
-          background:
-            "radial-gradient(1200px 600px at 80% -10%, rgba(122,147,201,0.15), transparent 60%), linear-gradient(180deg, var(--parchment), #eee6c8)",
+          // Dot-paper texture layered over the section's ambient gradients.
+          backgroundImage:
+            "radial-gradient(rgba(58,74,38,0.16) 1px, transparent 1.4px), radial-gradient(1200px 600px at 80% -10%, rgba(122,147,201,0.15), transparent 60%), linear-gradient(180deg, var(--parchment), #eee6c8)",
+          backgroundSize: "26px 26px, auto, auto",
         }}
-        className="relative w-full overflow-hidden px-6 md:px-[8vw] py-24 md:py-32"
+        className="relative flex min-h-screen w-full flex-col overflow-hidden px-6 md:px-[8vw] pt-20 pb-32 md:pt-24 md:pb-40"
       >
         <FlowerStamps tone="light" />
 
-        <div className="grid items-stretch gap-10 md:grid-cols-[1.1fr_0.9fr] md:gap-16">
-          {/* Heading + copy */}
-          <div>
-            <h2
-              className="font-serif-it text-moss-700 mb-8"
-              style={{ fontSize: "clamp(48px, 7vw, 96px)", lineHeight: 1, letterSpacing: "-0.015em" }}
-            >
-              <SplitReveal as="span" className="block">
-                {"About MHacks"}
-              </SplitReveal>
-            </h2>
-
-            <motion.p
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
-              viewport={{ once: true, amount: 0.5 }}
-              className="max-w-[560px] text-[22px] leading-[1.5] text-ink"
-            >
-              MHacks is the University of Michigan&rsquo;s flagship hackathon. 24 hours of creative
-              engineering, design, building, and prototyping that blur the line between code and
-              the real world. Join 1,000+ student builders this fall in Ann Arbor and build
-              something that can have lasting impact.
-            </motion.p>
-          </div>
-
-          {/* Video embed placeholder — matches the left column's height */}
+        {/* Decorative polaroid, bleeding off the right edge */}
+        <motion.div
+          aria-hidden
+          initial={{ opacity: 0, y: 24, rotate: 9 }}
+          whileInView={{ opacity: 1, y: 0, rotate: 5 }}
+          transition={{ duration: 0.9, ease: [0.2, 0.8, 0.2, 1], delay: 0.25 }}
+          viewport={{ once: true, amount: 0.4 }}
+          className="absolute right-[-70px] top-[10%] hidden lg:block"
+        >
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1], delay: 0.1 }}
-            viewport={{ once: true, amount: 0.3 }}
-            className="relative flex min-h-[280px] items-center justify-center overflow-hidden rounded-md border border-border bg-moss-800"
             data-cursor="hover"
+            whileHover={{ scale: 1.05, rotate: -2.5, boxShadow: "0 26px 60px rgba(29,36,18,0.3)" }}
+            transition={{ type: "spring", stiffness: 220, damping: 18 }}
+            style={{ boxShadow: "0 0 0 rgba(29,36,18,0)" }}
+            className="w-[400px] bg-white p-3 pb-4"
           >
-            <span className="absolute right-4 top-3 font-mono text-[10px] tracking-[0.15em] text-cream/50">
-              FILM / 2026
-            </span>
-            <div className="flex flex-col items-center gap-4">
-              <span className="flex h-16 w-16 items-center justify-center rounded-full border border-cream/40 bg-cream/10">
-                <svg width="18" height="20" viewBox="0 0 18 20" fill="none" aria-hidden>
-                  <path d="M17 10 1 19V1l16 9Z" fill="#EFE9D4" />
-                </svg>
-              </span>
-              <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-cream/60">
-                Video coming soon
-              </span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/about/about-03.jpg"
+              alt=""
+              draggable={false}
+              className="h-[240px] w-full object-cover"
+            />
+            <div className="mt-3 text-center font-serif-it text-[17px] text-moss-700">
+              ann arbor, mi
             </div>
+          </motion.div>
+        </motion.div>
+
+        {/* Decorative polaroid, bleeding off the left edge */}
+        <motion.div
+          aria-hidden
+          initial={{ opacity: 0, y: 24, rotate: -10 }}
+          whileInView={{ opacity: 1, y: 0, rotate: -6 }}
+          transition={{ duration: 0.9, ease: [0.2, 0.8, 0.2, 1], delay: 0.35 }}
+          viewport={{ once: true, amount: 0.4 }}
+          className="absolute left-[-70px] top-[12%] hidden lg:block"
+        >
+          <motion.div
+            data-cursor="hover"
+            whileHover={{ scale: 1.05, rotate: 3, boxShadow: "0 26px 60px rgba(29,36,18,0.28)" }}
+            transition={{ type: "spring", stiffness: 220, damping: 18 }}
+            style={{ boxShadow: "0 0 0 rgba(29,36,18,0)" }}
+            className="w-[400px] bg-white p-3 pb-4"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/about/about-06.jpg"
+              alt=""
+              draggable={false}
+              className="h-[240px] w-full object-cover"
+            />
+            <div className="mt-3 text-center font-serif-it text-[17px] text-moss-700">
+              north campus
+            </div>
+          </motion.div>
+        </motion.div>
+
+        {/* Centered heading + copy filling the viewport */}
+        <div className="flex flex-1 flex-col items-center justify-center text-center">
+          <h2
+            className="font-display font-medium text-moss-700"
+            style={{ fontSize: "clamp(30px, 4vw, 48px)", lineHeight: 1.05, letterSpacing: "-0.015em" }}
+          >
+            <SplitReveal as="span" className="block">
+              {"About MHacks"}
+            </SplitReveal>
+          </h2>
+
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
+            viewport={{ once: true, amount: 0.5 }}
+            className="mt-8 max-w-[620px] text-[15px] leading-[1.6] text-[#3d4730]"
+          >
+            MHacks is the University of Michigan&rsquo;s flagship hackathon. 24 hours of creative
+            engineering, design, building, and prototyping that blur the line between code and
+            the real world. Join 1,000+ student builders this fall in Ann Arbor and build
+            something that can have lasting impact.
+          </motion.p>
+
+          {/* Hint for the click-to-stamp flowers */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1], delay: 0.4 }}
+            viewport={{ once: true, amount: 0.5 }}
+            className="mt-12 flex items-center justify-center gap-3 text-moss-500"
+          >
+            <pre
+              aria-hidden
+              className="font-mono text-[9px] leading-[1.15]"
+            >{"\\ | /\n-(*)-\n/ | \\"}</pre>
+            <span className="font-mono text-[13px] tracking-[0.08em]">
+              Click around the canvas for some fun.
+            </span>
           </motion.div>
         </div>
 

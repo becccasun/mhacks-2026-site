@@ -14,6 +14,10 @@ interface Props {
   once?: boolean;
   /** Animate on mount instead of waiting for scroll into view. Use for above-the-fold hero copy. */
   immediate?: boolean;
+  /** Style the first N words with `leadClassName` — e.g. a sans lead-in
+      before the serif accent words in section headings. */
+  leadWords?: number;
+  leadClassName?: string;
 }
 
 /**
@@ -29,6 +33,8 @@ export function SplitReveal({
   by = "word",
   once = true,
   immediate = false,
+  leadWords = 0,
+  leadClassName,
 }: Props) {
   const reduced = useReducedMotion();
   const tokens = by === "word" ? children.split(/(\s+)/) : children.split("\n");
@@ -61,20 +67,31 @@ export function SplitReveal({
           ? { animate: "animate" }
           : { whileInView: "animate", viewport: { once, amount: 0.4 } })}
       >
-        {tokens.map((token, i) => {
-          if (/^\s+$/.test(token)) return <span key={i}>{token}</span>;
-          return (
-            <span
-              key={i}
-              className="reveal-line"
-              style={{ display: "inline-block", overflow: "hidden", verticalAlign: "top" }}
-            >
-              <motion.span variants={item} className="inline-block will-change-transform">
-                {token}
-              </motion.span>
-            </span>
-          );
-        })}
+        {(() => {
+          let wordIndex = 0;
+          return tokens.map((token, i) => {
+            if (/^\s+$/.test(token)) return <span key={i}>{token}</span>;
+            const isLead = by === "word" && wordIndex < leadWords;
+            wordIndex += 1;
+            return (
+              <span
+                key={i}
+                className="reveal-line"
+                style={{ display: "inline-block", overflow: "hidden", verticalAlign: "top" }}
+              >
+                <motion.span
+                  variants={item}
+                  className={cn(
+                    "inline-block will-change-transform",
+                    isLead && leadClassName,
+                  )}
+                >
+                  {token}
+                </motion.span>
+              </span>
+            );
+          });
+        })()}
       </motion.span>
     </Tag>
   );

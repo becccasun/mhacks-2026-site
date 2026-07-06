@@ -21,8 +21,8 @@ interface Props {
 
 const DEFAULT_ITEMS: Item[] = [
   { label: "About", href: "#about" },
-  { label: "FAQ", href: "#faq" },
   { label: "Sponsors", href: "#sponsors" },
+  { label: "FAQ", href: "#faq" },
 ];
 
 export function PillNav({ items = DEFAULT_ITEMS, className, variant = "light", style }: Props) {
@@ -59,7 +59,7 @@ export function PillNav({ items = DEFAULT_ITEMS, className, variant = "light", s
             }
           }}
           className={cn(
-            "font-serif-it px-4 py-1.5 text-[19px] leading-none rounded-pill transition-all duration-300",
+            "font-display px-4 py-1.5 text-[15px] font-medium leading-none rounded-pill transition-all duration-300",
             it.cta
               ? variant === "light"
                 ? "bg-moss-800 text-cream shadow-e-2 hover:bg-moss-900"

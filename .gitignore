@@ -7,3 +7,7 @@ out/
 .vercel
 .turbo
 next-env.d.ts.bak
+
+# local tooling config + build artifacts
+.claude/
+tsconfig.tsbuildinfo

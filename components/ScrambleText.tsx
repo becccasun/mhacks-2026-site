@@ -13,6 +13,12 @@ interface Props extends React.HTMLAttributes<HTMLSpanElement> {
   once?: boolean;
   /** Re-run the decrypt animation whenever the pointer enters. */
   replayOnHover?: boolean;
+  /** Fraction of the element that must be visible to trigger (0–1). */
+  threshold?: number;
+  /** Render blank until the decrypt starts (avoids flashing the real text). */
+  startEmpty?: boolean;
+  /** External trigger; when set it replaces the in-view trigger entirely. */
+  play?: boolean;
 }
 
 /**
@@ -26,10 +32,15 @@ export function ScrambleText({
   speed = 40,
   once = true,
   replayOnHover = false,
+  threshold = 0.6,
+  startEmpty = false,
+  play,
   ...rest
 }: Props) {
-  const [display, setDisplay] = useState(text);
-  const { ref, inView } = useInView<HTMLSpanElement>({ threshold: 0.6 });
+  const [display, setDisplay] = useState(() =>
+    startEmpty ? text.replace(/\S/g, " ") : text,
+  );
+  const { ref, inView } = useInView<HTMLSpanElement>({ threshold });
   const played = useRef(false);
   const animating = useRef(false);
   const timer = useRef(0);
@@ -67,12 +78,13 @@ export function ScrambleText({
   };
 
   useEffect(() => {
-    if (!inView) return;
+    const trigger = play ?? inView;
+    if (!trigger) return;
     if (once && played.current) return;
     played.current = true;
     run();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [inView, text, speed, once]);
+  }, [inView, play, text, speed, once]);
 
   useEffect(() => () => clearTimeout(timer.current), []);
 

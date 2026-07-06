@@ -111,14 +111,28 @@ html.has-custom-cursor * {
 }
 
 /* ---------- Reveal utility used by SplitReveal ---------- */
+/* Padding expands the clip box so italic serif overhangs aren't sheared off;
+   the negative margins cancel it out of the layout. */
 .reveal-line {
   overflow: hidden;
   display: block;
+  padding: 0 0.14em 0.08em;
+  margin: 0 -0.14em -0.08em;
 }
 .reveal-inner {
   display: inline-block;
   transform: translateY(115%);
   will-change: transform;
+}
+
+/* ---------- Typewriter caret ---------- */
+.type-caret {
+  animation: caret-blink 0.85s steps(1) infinite;
+}
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
 }
 
 /* ---------- Reduced motion ---------- */
@@ -235,6 +249,19 @@ html.lg-refract .liquid-glass {
       transparent 55%
     );
   opacity: 0.8;
+}
+
+/* Compositor-cheap variant for large panels: no backdrop sampling and no
+   blend-mode pseudo layer, just the gradients/rims. Used where the backdrop
+   is pre-blurred anyway — real frosting there costs GPU surfaces for zero
+   visible difference (and was flashing under memory pressure). */
+.liquid-glass.lg-static {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+.liquid-glass.lg-static::before {
+  mix-blend-mode: normal;
+  opacity: 0.35;
 }
 
 .liquid-glass:hover {

@@ -3,7 +3,8 @@
 import { useEffect, useRef } from "react";
 import { motion, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
 import { HeroReveal } from "@/components/HeroReveal";
-import { SplitReveal } from "@/components/SplitReveal";
+import { Typewriter } from "@/components/Typewriter";
+import { DeadlineCountdown } from "@/components/DeadlineCountdown";
 import { AsciiGlow } from "@/components/AsciiGlow";
 import { ScrambleText } from "@/components/ScrambleText";
 import { prefersReducedMotion } from "@/lib/utils";
@@ -62,8 +63,9 @@ export function Hero() {
     <section
       ref={ref}
       id="top"
-      data-nav-theme="dark"
-      className="relative w-full overflow-hidden"
+      data-nav-theme="hero"
+      data-cursor-box="You"
+      className="relative z-[4] w-full overflow-hidden"
       style={{ minHeight: "100vh" }}
       onMouseMove={onTiltMove}
       onMouseLeave={onTiltLeave}
@@ -80,8 +82,11 @@ export function Hero() {
         </motion.div>
       </div>
 
-      {/* Breathing ASCII starfield, counter-drifting for parallax depth */}
+      {/* Breathing ASCII starfield, counter-drifting for parallax depth.
+          data-stack-pause: StackedPages display-toggles this while the hero
+          is buried under later sheets so the canvas loop stops. */}
       <motion.div
+        data-stack-pause
         className="pointer-events-none absolute inset-0 z-[3]"
         style={{ x: starX, y: starY }}
       >
@@ -101,7 +106,23 @@ export function Hero() {
       {/* Meta row + giant title, edge-aligned as one lockup */}
       <div className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center pt-16">
         {/* Width is set by the title, so the meta row spans exactly its edges. */}
-        <div className="flex flex-col gap-4 md:gap-6">
+        <div className="relative flex flex-col gap-4 md:gap-6">
+          {/* Live application deadline countdown — absolutely positioned so it
+              doesn't push the title off vertical center */}
+          <motion.div
+            style={{ opacity: metaOpacity, y: titleY }}
+            className="absolute -top-14 left-0 right-0 flex justify-center md:-top-16"
+          >
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1], delay: 0.2 }}
+              className="pointer-events-auto"
+            >
+              <DeadlineCountdown />
+            </motion.div>
+          </motion.div>
+
           <motion.h1
             style={{
               y: titleY,
@@ -114,9 +135,7 @@ export function Hero() {
             }}
             className="font-serif-it text-cream text-center whitespace-nowrap will-change-transform"
           >
-            <SplitReveal by="word" delay={0.35} stagger={0.09} immediate className="block">
-              {"MHACKS 2026"}
-            </SplitReveal>
+            <Typewriter text="MHACKS 2026" delay={400} speed={85} className="block" />
           </motion.h1>
 
           <motion.div
@@ -153,31 +172,38 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Scroll cue */}
+      {/* Scroll cue — chevron flashing between full and zero opacity.
+          Outer layer fades with scroll, middle layer plays the entrance,
+          inner layer oscillates — nesting keeps the three opacities from
+          fighting over the same property. */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 1.4 }}
         style={{ opacity: metaOpacity }}
-        className="absolute left-1/2 bottom-10 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
+        className="absolute left-1/2 bottom-16 -translate-x-1/2 z-10"
       >
-        <span
-          className="rounded-pill border border-white/40 bg-[rgba(29,36,18,0.55)] px-3 py-1 text-cream backdrop-blur-sm"
-          style={{
-            fontFamily: "var(--font-red-hat-mono)",
-            fontSize: 10,
-            letterSpacing: "0.32em",
-            textTransform: "uppercase",
-          }}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 1.4 }}
         >
-          Scroll
-        </span>
-        <motion.span
-          aria-hidden
-          className="block h-7 w-px bg-cream/90"
-          animate={{ scaleY: [0.3, 1, 0.3], transformOrigin: "top" }}
-          transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-        />
+          <motion.svg
+            aria-hidden
+            width="30"
+            height="17"
+            viewBox="0 0 30 17"
+            fill="none"
+            className="text-cream drop-shadow-[0_1px_8px_rgba(20,30,10,0.55)]"
+            animate={{ opacity: [1, 0, 1] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <path
+              d="M2.5 2.5L15 14.5L27.5 2.5"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </motion.svg>
+        </motion.div>
       </motion.div>
     </section>
   );

@@ -3,26 +3,26 @@
 import { useEffect, useState } from "react";
 
 /**
- * Tone of the background currently sitting under the fixed header, driven by
- * `data-nav-theme="light" | "dark"` attributes on page sections. Sampled at
- * `probeY` px from the viewport top. Between tagged sections (e.g. gradient
- * bridges) the previous tone is kept to avoid flicker.
+ * "hero" while the scroll position is above the hero's midpoint, "page" once
+ * it passes halfway through the hero. Deterministic single boundary — the
+ * frosted nav bar is on for everything below that midpoint, and the
+ * transparent hero variant is guaranteed by the time you're back at the top.
  */
-export function useNavTheme(probeY = 72): "dark" | "light" {
-  const [tone, setTone] = useState<"dark" | "light">("dark");
+export function useNavTheme(fraction = 0.5): "hero" | "page" {
+  const [zone, setZone] = useState<"hero" | "page">("hero");
 
   useEffect(() => {
+    const hero = document.getElementById("top");
+
     const update = () => {
-      const sections = Array.from(
-        document.querySelectorAll<HTMLElement>("[data-nav-theme]"),
-      );
-      for (const el of sections) {
-        const r = el.getBoundingClientRect();
-        if (r.top <= probeY && r.bottom >= probeY) {
-          setTone(el.dataset.navTheme === "light" ? "light" : "dark");
-          return;
-        }
+      if (!hero) {
+        setZone("page");
+        return;
       }
+      // The hero is sticky-pinned under the page stack, so its bounding rect
+      // never moves once pinned — judge by scroll position against its flow
+      // height instead.
+      setZone(window.scrollY < hero.offsetHeight * fraction ? "hero" : "page");
     };
 
     update();
@@ -32,7 +32,7 @@ export function useNavTheme(probeY = 72): "dark" | "light" {
       window.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
     };
-  }, [probeY]);
+  }, [fraction]);
 
-  return tone;
+  return zone;
 }

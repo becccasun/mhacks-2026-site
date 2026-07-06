@@ -1,6 +1,7 @@
 "use client";
 
 import * as Accordion from "@radix-ui/react-accordion";
+import { motion } from "framer-motion";
 import { SplitReveal } from "@/components/SplitReveal";
 import { FaqItem } from "@/components/FaqItem";
 import { FlowerStamps } from "@/components/FlowerStamps";
@@ -37,18 +38,86 @@ export function Faq() {
     <section
       id="faq"
       data-nav-theme="light"
-      className="relative z-[7] -mt-14 md:-mt-20 rounded-t-[40px] md:rounded-t-[48px] bg-parchment px-6 md:px-[8vw] py-24 md:py-32"
+      className="relative z-[7] -mt-14 md:-mt-20 min-h-screen rounded-t-[40px] md:rounded-t-[48px] bg-parchment px-6 md:px-[8vw] py-24 md:py-32"
+      style={{
+        backgroundImage: "radial-gradient(rgba(58,74,38,0.16) 1px, transparent 1.4px)",
+        backgroundSize: "26px 26px",
+      }}
     >
       <FlowerStamps tone="light" />
 
-      <div className="grid gap-14 md:grid-cols-[0.7fr_1.3fr] items-start">
-        <div className="md:sticky md:top-24">
-          <h2 className="font-serif-it text-moss-700" style={{ fontSize: "clamp(48px, 7vw, 96px)", lineHeight: 1, letterSpacing: "-0.015em" }}>
-            <SplitReveal as="span" className="block">{"Frequently"}</SplitReveal>
-            <SplitReveal as="span" className="block" delay={0.15}>{"Asked"}</SplitReveal>
-            <SplitReveal as="span" className="block" delay={0.3}>{"Questions"}</SplitReveal>
+      <div className="grid gap-14 md:grid-cols-[0.7fr_1.3fr] items-stretch">
+        <div className="flex flex-col justify-between gap-10">
+          <h2
+            className="font-display font-medium text-moss-700"
+            style={{ fontSize: "clamp(30px, 4vw, 48px)", lineHeight: 1.15, letterSpacing: "-0.015em" }}
+          >
+            <SplitReveal as="span" className="block">
+              {"Frequently Asked Questions"}
+            </SplitReveal>
           </h2>
-          <p className="mt-6 max-w-[340px] text-[15px] leading-[1.6] text-[#4d5942]">
+
+          {/* Decorative vertical polaroids pinned between heading and contact.
+              The back one peeks out to the left; hovering either brings it to
+              the top of the pile. */}
+          <motion.div
+            aria-hidden
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: [0.2, 0.8, 0.2, 1], delay: 0.2 }}
+            viewport={{ once: true, amount: 0.4 }}
+            className="hidden justify-center py-12 md:flex"
+          >
+            <div className="relative">
+              <motion.div
+                data-cursor="hover"
+                style={{ rotate: 6, boxShadow: "0 0 0 rgba(29,36,18,0)" }}
+                whileHover={{
+                  scale: 1.06,
+                  rotate: 1,
+                  boxShadow: "0 26px 60px rgba(29,36,18,0.28)",
+                }}
+                transition={{ type: "spring", stiffness: 220, damping: 18 }}
+                className="absolute -left-[115px] top-5 z-0 w-[180px] bg-white p-3 pb-4 hover:z-10"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/about/about-05.jpg"
+                  alt=""
+                  draggable={false}
+                  className="h-[225px] w-full object-cover"
+                />
+                <div className="mt-3 text-center font-serif-it text-[15px] text-moss-700">
+                  demo day
+                </div>
+              </motion.div>
+
+              <motion.div
+                data-cursor="hover"
+                style={{ rotate: -3, boxShadow: "0 0 0 rgba(29,36,18,0)" }}
+                whileHover={{
+                  scale: 1.05,
+                  rotate: 1.5,
+                  boxShadow: "0 26px 60px rgba(29,36,18,0.28)",
+                }}
+                transition={{ type: "spring", stiffness: 220, damping: 18 }}
+                className="relative z-[1] w-[200px] bg-white p-3 pb-4 hover:z-10"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/about/about-02.jpg"
+                  alt=""
+                  draggable={false}
+                  className="h-[250px] w-full object-cover"
+                />
+                <div className="mt-3 text-center font-serif-it text-[15px] text-moss-700">
+                  see you in october
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
+
+          <p className="max-w-[340px] text-[15px] leading-[1.6] text-[#4d5942]">
             Can&rsquo;t find what you&rsquo;re looking for? Email us at{" "}
             <a href="mailto:hello@mhacks.org" className="text-moss-700 underline underline-offset-4 hover:text-moss-800" data-cursor="hover">
               hello@mhacks.org
