@@ -1,10 +1,12 @@
 "use client";
 
+import { useRef, useState } from "react";
 import * as Accordion from "@radix-ui/react-accordion";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { SplitReveal } from "@/components/SplitReveal";
 import { FaqItem } from "@/components/FaqItem";
 import { FlowerStamps } from "@/components/FlowerStamps";
+import { SpeciesLabel } from "@/components/SpeciesLabel";
 
 const FAQS = [
   {
@@ -34,11 +36,32 @@ const FAQS = [
 ];
 
 export function Faq() {
+  const ref = useRef<HTMLElement | null>(null);
+  const reduced = useReducedMotion();
+  const [openItem, setOpenItem] = useState("");
+
+  // Violets zoom into existence as the sheet scrolls into place — staggered
+  // so they bloom one after another. Scroll-linked scale, transform-only.
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "start start"],
+  });
+  const bloom1 = useTransform(scrollYProgress, [0.35, 0.8], [0, 1]);
+  const bloom2 = useTransform(scrollYProgress, [0.45, 0.9], [0, 1]);
+  const bloom3 = useTransform(scrollYProgress, [0.55, 1], [0, 1]);
+
+  const violets = [
+    { src: "/faq/flower-1.webp", width: 152, scale: bloom1, sway: 5, drift: -3.5 },
+    { src: "/faq/flower-2.webp", width: 120, scale: bloom2, sway: 6.2, drift: 4 },
+    { src: "/faq/flower-3.webp", width: 138, scale: bloom3, sway: 5.6, drift: -4.5 },
+  ];
+
   return (
     <section
+      ref={ref}
       id="faq"
       data-nav-theme="light"
-      className="relative z-[7] -mt-14 md:-mt-20 min-h-screen rounded-t-[40px] md:rounded-t-[48px] bg-parchment px-6 md:px-[8vw] py-24 md:py-32"
+      className="relative z-[9] -mt-14 md:-mt-20 min-h-screen rounded-t-[40px] md:rounded-t-[48px] bg-parchment px-6 md:px-[8vw] pt-24 pb-32 md:pt-32 md:pb-[260px]"
       style={{
         backgroundImage: "radial-gradient(rgba(58,74,38,0.16) 1px, transparent 1.4px)",
         backgroundSize: "26px 26px",
@@ -82,13 +105,13 @@ export function Faq() {
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/about/about-05.jpg"
+                  src="/faq/polaroid-1.jpg"
                   alt=""
                   draggable={false}
                   className="h-[225px] w-full object-cover"
                 />
                 <div className="mt-3 text-center font-serif-it text-[15px] text-moss-700">
-                  demo day
+                  apply today
                 </div>
               </motion.div>
 
@@ -105,13 +128,13 @@ export function Faq() {
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/about/about-02.jpg"
+                  src="/faq/polaroid-2.jpg"
                   alt=""
                   draggable={false}
                   className="h-[250px] w-full object-cover"
                 />
                 <div className="mt-3 text-center font-serif-it text-[15px] text-moss-700">
-                  see you in october
+                  see you soon
                 </div>
               </motion.div>
             </div>
@@ -126,11 +149,67 @@ export function Faq() {
           </p>
         </div>
 
-        <Accordion.Root type="multiple" className="flex flex-col gap-2">
+        {/* Single-open: expanding one answer collapses the previous, so the
+            sheet's height stays consistent and can't crash into the violets */}
+        <Accordion.Root
+          type="single"
+          collapsible
+          value={openItem}
+          onValueChange={setOpenItem}
+          className="flex flex-col gap-2"
+        >
           {FAQS.map((f, i) => (
-            <FaqItem key={f.q} value={`item-${i}`} q={f.q} a={f.a} />
+            <FaqItem
+              key={f.q}
+              value={`item-${i}`}
+              q={f.q}
+              a={f.a}
+              open={openItem === `item-${i}`}
+            />
           ))}
         </Accordion.Root>
+      </div>
+
+      {/* Violet trio anchored to the section's bottom edge, beneath the
+          questions — when an answer expands and the sheet grows, they ride
+          down with the bottom. Each blooms in on scroll, then idles with its
+          own slow sway. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute bottom-[150px] right-[8vw] hidden items-end gap-12 md:flex"
+      >
+        {/* Species tag planted at the base of the trio */}
+        <SpeciesLabel
+          name="Dwarf Lake Iris"
+          rotate={-5}
+          className="absolute -left-[200px] bottom-[28px] flex"
+        />
+        {violets.map((v) => (
+          <motion.div
+            key={v.src}
+            style={{
+              scale: reduced ? 1 : v.scale,
+              transformOrigin: "50% 100%",
+            }}
+          >
+            <motion.img
+              src={v.src}
+              alt=""
+              draggable={false}
+              width={v.width}
+              animate={
+                reduced
+                  ? undefined
+                  : { rotate: [v.drift, -v.drift, v.drift], y: [-5, 6, -5] }
+              }
+              transition={{
+                duration: v.sway,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          </motion.div>
+        ))}
       </div>
     </section>
   );

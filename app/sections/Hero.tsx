@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { motion, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
 import { HeroReveal } from "@/components/HeroReveal";
+import { MlhBadge } from "@/components/MlhBadge";
 import { Typewriter } from "@/components/Typewriter";
 import { DeadlineCountdown } from "@/components/DeadlineCountdown";
 import { AsciiGlow } from "@/components/AsciiGlow";
@@ -65,6 +66,7 @@ export function Hero() {
       id="top"
       data-nav-theme="hero"
       data-cursor-box="You"
+      data-cursor-zone
       className="relative z-[4] w-full overflow-hidden"
       style={{ minHeight: "100vh" }}
       onMouseMove={onTiltMove}
@@ -92,6 +94,10 @@ export function Hero() {
       >
         <AsciiGlow />
       </motion.div>
+
+      {/* MLH trust badge, resting on the hero's top edge — scrolls away with
+          the hero (covered by the next sheet), unlike the fixed header */}
+      <MlhBadge />
 
       {/* Vignette for text legibility */}
       <div

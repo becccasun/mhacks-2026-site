@@ -33,7 +33,10 @@ export function Cursor() {
     const onMove = (e: MouseEvent) => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
-      setVisible(true);
+      // The custom cursor only lives inside opted-in zones (hero + header);
+      // everywhere else the native cursor shows and the trailers hide.
+      const el = e.target instanceof Element ? e.target : null;
+      setVisible(el?.closest("[data-cursor-zone]") !== null && el !== null);
       start();
     };
 

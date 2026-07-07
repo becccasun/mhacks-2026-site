@@ -39,11 +39,16 @@ export function Footer() {
           draggable={false}
           className="h-full w-full object-cover object-[68%_12%]"
         />
+        {/* Tonal sweep: lighter band up top falling into deep olive shadow
+            below-left, so the wash reads moody rather than uniform */}
         <div
           className="absolute inset-0"
           style={{
-            background:
-              "linear-gradient(180deg, rgba(29,36,18,0.38) 0%, rgba(29,36,18,0.24) 45%, rgba(29,36,18,0.44) 100%)",
+            background: [
+              "radial-gradient(130% 110% at 22% 95%, rgba(18,23,10,0.62) 0%, rgba(18,23,10,0) 58%)",
+              "radial-gradient(90% 80% at 78% 8%, rgba(239,233,212,0.1) 0%, rgba(239,233,212,0) 55%)",
+              "linear-gradient(180deg, rgba(29,36,18,0.3) 0%, rgba(29,36,18,0.34) 45%, rgba(24,30,14,0.58) 100%)",
+            ].join(", "),
           }}
         />
         <div

@@ -17,6 +17,7 @@ export function SiteHeader() {
 
   return (
     <motion.header
+      data-cursor-zone
       initial={false}
       animate={{ y: visible ? 0 : -120 }}
       transition={{ duration: 0.38, ease: [0.2, 0.8, 0.2, 1] }}

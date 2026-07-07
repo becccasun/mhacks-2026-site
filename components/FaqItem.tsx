@@ -2,17 +2,18 @@
 
 import * as Accordion from "@radix-ui/react-accordion";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface Props {
   value: string;
   q: string;
   a: string;
+  /** Whether this item is the accordion's open item — controlled by Faq, so
+      single-open switching closes the previous answer's animation too. */
+  open: boolean;
 }
 
-export function FaqItem({ value, q, a }: Props) {
-  const [open, setOpen] = useState(false);
+export function FaqItem({ value, q, a, open }: Props) {
   return (
     <Accordion.Item
       value={value}
@@ -21,7 +22,6 @@ export function FaqItem({ value, q, a }: Props) {
     >
       <Accordion.Header asChild>
         <Accordion.Trigger
-          onClick={() => setOpen((v) => !v)}
           className="group flex w-full items-center justify-between gap-4 px-6 py-5 text-left text-[17px] font-medium text-ink"
           data-cursor="hover"
         >

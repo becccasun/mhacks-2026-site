@@ -2,8 +2,8 @@ import { Hero } from "./sections/Hero";
 import { About } from "./sections/About";
 import { Sponsors } from "./sections/Sponsors";
 import { Faq } from "./sections/Faq";
+import { Timeline } from "./sections/Timeline";
 import { Social } from "./sections/Social";
-import { StayInTheLoop } from "./sections/StayInTheLoop";
 import { Footer } from "./sections/Footer";
 import { StackedPages } from "@/components/StackedPages";
 
@@ -20,9 +20,9 @@ export default function Home() {
       <Hero />
       <About />
       <Sponsors />
-      <Faq />
+      <Timeline />
       <Social />
-      <StayInTheLoop />
+      <Faq />
       <Footer />
       <StackedPages />
     </main>

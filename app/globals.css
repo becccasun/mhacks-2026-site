@@ -70,15 +70,24 @@ button {
   color: var(--cream);
 }
 
-/* Hide native cursor when custom cursor is active (desktop only). */
-html.has-custom-cursor,
-html.has-custom-cursor * {
+/* Outside the custom-cursor zones, interactive elements use the standard
+   pointer like any other site. */
+button,
+[role="button"],
+[data-cursor="hover"] {
+  cursor: pointer;
+}
+
+/* Hide the native cursor only inside custom-cursor zones (hero + header);
+   everywhere else the page uses normal web cursors. */
+html.has-custom-cursor [data-cursor-zone],
+html.has-custom-cursor [data-cursor-zone] * {
   cursor: none !important;
 }
 
 @media (hover: none), (pointer: coarse) {
-  html.has-custom-cursor,
-  html.has-custom-cursor * {
+  html.has-custom-cursor [data-cursor-zone],
+  html.has-custom-cursor [data-cursor-zone] * {
     cursor: auto !important;
   }
 }

@@ -1,9 +1,18 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { SplitReveal } from "@/components/SplitReveal";
 import { DotGridReactive } from "@/components/DotGridReactive";
-import { SOCIAL_POSTS, INSTAGRAM_URL } from "@/lib/socials";
+import { FlowerStamps } from "@/components/FlowerStamps";
+import { SpeciesLabel } from "@/components/SpeciesLabel";
+import { SOCIAL_POSTS, INSTAGRAM_URL, LINKEDIN_URL, TIKTOK_URL } from "@/lib/socials";
+
+const HANDLES = [
+  { label: "@mhacks_ on Instagram ↗", href: INSTAGRAM_URL },
+  { label: "MHacks on LinkedIn ↗", href: LINKEDIN_URL },
+  { label: "@mhacks_official on TikTok ↗", href: TIKTOK_URL },
+];
 
 /**
  * "Our Social Media" — a dark gallery wall of the latest Instagram posts,
@@ -11,8 +20,20 @@ import { SOCIAL_POSTS, INSTAGRAM_URL } from "@/lib/socials";
  * handoff notes there for wiring this to the Instagram API).
  */
 export function Social() {
+  const ref = useRef<HTMLElement | null>(null);
+  const reduced = useReducedMotion();
+
+  // White lily-of-the-valley garland: peeks from the right edge and drifts
+  // left into place as the sheet scrolls in (mirror of the Sponsors branch).
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "start start"],
+  });
+  const garlandX = useTransform(scrollYProgress, [0.08, 0.92], ["62vw", "0vw"]);
+
   return (
     <section
+      ref={ref}
       id="social"
       data-nav-theme="dark"
       className="relative z-[8] -mt-14 md:-mt-20 flex min-h-screen flex-col justify-center overflow-hidden rounded-t-[40px] md:rounded-t-[48px] bg-moss-900 text-cream px-6 md:px-[8vw] py-24 md:py-32"
@@ -30,6 +51,35 @@ export function Social() {
       {/* Dot lattice that swells and brightens around the cursor */}
       <DotGridReactive />
 
+      <FlowerStamps tone="dark" />
+
+      {/* White lily-of-the-valley garland along the top — full-bleed, in flow */}
+      <motion.div
+        aria-hidden
+        style={{ x: reduced ? 0 : garlandX }}
+        className="pointer-events-none relative -mx-6 mb-10 md:-mx-[8vw] md:mb-12"
+      >
+        {/* Idle waver anchored toward the right, where the stem roots offscreen */}
+        <motion.div
+          animate={
+            reduced ? undefined : { rotate: [-0.9, 1.2, -0.9], y: [-7, 8, -7] }
+          }
+          transition={{ duration: 6.4, repeat: Infinity, ease: "easeInOut" }}
+          style={{ transformOrigin: "85% 50%" }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/social/garland-white.webp" alt="" draggable={false} className="ml-auto w-[88%]" />
+        </motion.div>
+        {/* Species tag in the blank pocket above the vine's dip — the one
+            non-native species in the set, so it's flagged as invasive */}
+        <SpeciesLabel
+          name="Lily of the Valley"
+          invasive
+          rotate={3}
+          className="absolute left-[60%] top-[calc(14%-20px)] hidden md:flex"
+        />
+      </motion.div>
+
       <div className="relative mb-14 flex flex-wrap items-end justify-between gap-8 md:mb-16">
         <h2
           className="font-display font-medium text-cream"
@@ -39,19 +89,24 @@ export function Social() {
             {"Our Social Media"}
           </SplitReveal>
         </h2>
-        <motion.a
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
-          viewport={{ once: true, amount: 0.5 }}
-          href={INSTAGRAM_URL}
-          target="_blank"
-          rel="noreferrer"
-          data-cursor="hover"
-          className="font-mono text-[13px] uppercase tracking-[0.18em] text-cream/70 transition-colors hover:text-cream hover:underline underline-offset-4"
-        >
-          @mhacks_ on Instagram ↗
-        </motion.a>
+        <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
+          {HANDLES.map((h, i) => (
+            <motion.a
+              key={h.href}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1], delay: i * 0.1 }}
+              viewport={{ once: true, amount: 0.5 }}
+              href={h.href}
+              target="_blank"
+              rel="noreferrer"
+              data-cursor="hover"
+              className="font-mono text-[13px] uppercase tracking-[0.18em] text-cream/70 transition-colors hover:text-cream hover:underline underline-offset-4"
+            >
+              {h.label}
+            </motion.a>
+          ))}
+        </div>
       </div>
 
       <div className="relative grid grid-cols-2 gap-x-6 gap-y-12 sm:grid-cols-3 lg:grid-cols-5 lg:gap-x-7">

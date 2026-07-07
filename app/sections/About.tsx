@@ -53,7 +53,7 @@ export function About() {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/about/about-03.jpg"
+              src="/about/about-09.jpg"
               alt=""
               draggable={false}
               className="h-[240px] w-full object-cover"
@@ -82,13 +82,13 @@ export function About() {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/about/about-06.jpg"
+              src="/about/about-10.jpg"
               alt=""
               draggable={false}
               className="h-[240px] w-full object-cover"
             />
             <div className="mt-3 text-center font-serif-it text-[17px] text-moss-700">
-              north campus
+              university of michigan
             </div>
           </motion.div>
         </motion.div>
@@ -129,8 +129,38 @@ export function About() {
               aria-hidden
               className="font-mono text-[9px] leading-[1.15]"
             >{"\\ | /\n-(*)-\n/ | \\"}</pre>
-            <span className="font-mono text-[13px] tracking-[0.08em]">
+            <span className="relative font-mono text-[13px] tracking-[0.08em]">
               Click around the canvas for some fun.
+              {/* Hand-drawn marker underline, drawn on when scrolled into
+                  view — two wobbly passes so it reads like a real swipe */}
+              <svg
+                aria-hidden
+                viewBox="0 0 330 14"
+                fill="none"
+                className="absolute left-0 top-full mt-0.5 w-full"
+                style={{ overflow: "visible" }}
+              >
+                <motion.path
+                  d="M5 8 C 52 3.5, 98 12, 150 7.5 C 196 3.8, 242 11, 284 7 C 302 5.4, 316 6.4, 326 5.5"
+                  stroke="#5D6B3A"
+                  strokeWidth="6"
+                  strokeLinecap="round"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  whileInView={{ pathLength: 1, opacity: 0.75 }}
+                  viewport={{ once: true, amount: 0.9 }}
+                  transition={{ duration: 0.85, ease: [0.65, 0, 0.35, 1], delay: 0.9 }}
+                />
+                <motion.path
+                  d="M10 11 C 70 7, 150 12.5, 214 9 C 258 6.6, 300 9.5, 324 8"
+                  stroke="#5D6B3A"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  whileInView={{ pathLength: 1, opacity: 0.4 }}
+                  viewport={{ once: true, amount: 0.9 }}
+                  transition={{ duration: 0.8, ease: [0.65, 0, 0.35, 1], delay: 1.05 }}
+                />
+              </svg>
             </span>
           </motion.div>
         </div>

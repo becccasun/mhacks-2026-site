@@ -22,6 +22,8 @@ export interface SocialPost {
 }
 
 export const INSTAGRAM_URL = "https://www.instagram.com/mhacks_/";
+export const LINKEDIN_URL = "https://www.linkedin.com/company/mhacks/";
+export const TIKTOK_URL = "https://www.tiktok.com/@mhacks_official";
 
 export const SOCIAL_POSTS: SocialPost[] = [
   {

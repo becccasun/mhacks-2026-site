@@ -1,13 +1,28 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { SplitReveal } from "@/components/SplitReveal";
 import { Button } from "@/components/Button";
 import { FlowerStamps } from "@/components/FlowerStamps";
+import { SpeciesLabel } from "@/components/SpeciesLabel";
 
 export function Sponsors() {
+  const ref = useRef<HTMLElement | null>(null);
+  const reduced = useReducedMotion();
+
+  // Blossom branch: scroll-linked entrance while the sheet slides into
+  // place — it peeks out from the right edge and drifts left into position.
+  // Transform-only (compositor-safe), frozen once the sheet pins.
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "start start"],
+  });
+  const branchX = useTransform(scrollYProgress, [0.08, 0.92], ["62vw", "0vw"]);
+
   return (
     <section
+      ref={ref}
       id="sponsors"
       data-nav-theme="dark"
       className="relative z-[6] -mt-14 md:-mt-20 flex min-h-screen flex-col justify-center overflow-hidden rounded-t-[40px] md:rounded-t-[48px] bg-moss-700 text-cream px-6 md:px-[8vw] py-24 md:py-32"
@@ -27,6 +42,40 @@ export function Sponsors() {
 
       <FlowerStamps tone="dark" />
 
+      {/* Blossom branch filling the gap above the heading — full-bleed, in
+          flow so it can never collide with the heading below it */}
+      <motion.div
+        aria-hidden
+        style={{ x: reduced ? 0 : branchX }}
+        className="pointer-events-none relative -mx-6 mb-12 md:-mx-[8vw] md:mb-14"
+      >
+        {/* Gentle idle sway on top of the scroll-linked drift, anchored
+            toward the branch's right side like it's rooted offscreen */}
+        <motion.div
+          animate={
+            reduced
+              ? undefined
+              : { rotate: [-1.1, 1.5, -1.1], y: [-8, 9, -8] }
+          }
+          transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+          style={{ transformOrigin: "85% 50%" }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/sponsors/branch.webp"
+            alt=""
+            draggable={false}
+            className="ml-auto w-[88%]"
+          />
+        </motion.div>
+        {/* Species tag in the blank pocket above the branch's dip */}
+        <SpeciesLabel
+          name="Apple Blossom"
+          rotate={-4}
+          className="absolute left-[calc(57%+20px)] top-[calc(6%-20px)] hidden md:flex"
+        />
+      </motion.div>
+
       <div className="relative mb-16 flex min-h-[120px] flex-wrap items-stretch justify-between gap-10">
         <h2
           className="self-start font-display font-medium text-cream"
@@ -43,7 +92,7 @@ export function Sponsors() {
           viewport={{ once: true, amount: 0.5 }}
           className="max-w-[480px] self-end text-[17px] leading-[1.6] text-[#dcd8c2]"
         >
-          The final lineup of sponsors is currently in the works. Please check back later.
+          Our 2026 sponsor lineup is taking shape — check back soon.
         </motion.p>
       </div>
 
