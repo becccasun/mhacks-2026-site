@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { motion, type MotionValue } from "framer-motion";
 import { cn, isTouchDevice, prefersReducedMotion } from "@/lib/utils";
+import { asset } from "@/lib/asset";
 
 interface HeroImageProps {
   src: string;
@@ -77,10 +78,10 @@ const DOT_GRID = [
 export function HeroReveal({
   scale,
   y,
-  src = "/hero/hero-clean.png",
-  src768 = "/hero/hero-clean.png",
-  src2560 = "/hero/hero-clean-2560.png",
-  src3840 = "/hero/hero-clean-3840.png",
+  src = asset("/hero/hero-clean.png"),
+  src768 = asset("/hero/hero-clean.png"),
+  src2560 = asset("/hero/hero-clean-2560.png"),
+  src3840 = asset("/hero/hero-clean-3840.png"),
   radius = 280,
 }: Props) {
   const stageRef = useRef<HTMLDivElement | null>(null);

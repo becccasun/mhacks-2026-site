@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { scrollToHash } from "@/lib/scroll";
+import { asset } from "@/lib/asset";
 
 interface Props {
   size?: number;
@@ -22,7 +23,7 @@ export function Logo({
 }: Props) {
   const img = (
     <Image
-      src="/logos/mhacks-logo.png"
+      src={asset("/logos/mhacks-logo.png")}
       alt="MHacks"
       width={size}
       height={size}

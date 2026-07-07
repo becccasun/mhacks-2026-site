@@ -1,3 +1,5 @@
+import { asset } from "@/lib/asset";
+
 /**
  * MLH trust badge — rests at the top of the hero (absolute, not fixed), a
  * little to the right of the MHacks logo. It scrolls away with the page:
@@ -16,7 +18,7 @@ export function MlhBadge() {
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/logos/mlh-trust-badge-2027-black.svg"
+        src={asset("/logos/mlh-trust-badge-2027-black.svg")}
         alt="Major League Hacking 2026 Hackathon Season"
         className="w-full"
       />

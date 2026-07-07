@@ -7,6 +7,7 @@ import { SplitReveal } from "@/components/SplitReveal";
 import { FaqItem } from "@/components/FaqItem";
 import { FlowerStamps } from "@/components/FlowerStamps";
 import { SpeciesLabel } from "@/components/SpeciesLabel";
+import { asset } from "@/lib/asset";
 
 const FAQS = [
   {
@@ -51,9 +52,9 @@ export function Faq() {
   const bloom3 = useTransform(scrollYProgress, [0.55, 1], [0, 1]);
 
   const violets = [
-    { src: "/faq/flower-1.webp", width: 152, scale: bloom1, sway: 5, drift: -3.5 },
-    { src: "/faq/flower-2.webp", width: 120, scale: bloom2, sway: 6.2, drift: 4 },
-    { src: "/faq/flower-3.webp", width: 138, scale: bloom3, sway: 5.6, drift: -4.5 },
+    { src: asset("/faq/flower-1.webp"), width: 152, scale: bloom1, sway: 5, drift: -3.5 },
+    { src: asset("/faq/flower-2.webp"), width: 120, scale: bloom2, sway: 6.2, drift: 4 },
+    { src: asset("/faq/flower-3.webp"), width: 138, scale: bloom3, sway: 5.6, drift: -4.5 },
   ];
 
   return (
@@ -105,7 +106,7 @@ export function Faq() {
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/faq/polaroid-1.jpg"
+                  src={asset("/faq/polaroid-1.jpg")}
                   alt=""
                   draggable={false}
                   className="h-[225px] w-full object-cover"
@@ -128,7 +129,7 @@ export function Faq() {
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/faq/polaroid-2.jpg"
+                  src={asset("/faq/polaroid-2.jpg")}
                   alt=""
                   draggable={false}
                   className="h-[250px] w-full object-cover"

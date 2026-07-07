@@ -2,6 +2,7 @@
 
 import { Logo } from "@/components/Logo";
 import { scrollToHash } from "@/lib/scroll";
+import { asset } from "@/lib/asset";
 
 const LINKS = [
   { label: "About", href: "#about" },
@@ -34,7 +35,7 @@ export function Footer() {
             compositor never has to rebuild a giant blurred surface mid-scroll. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/footer/footer-pastel-soft.jpg"
+          src={asset("/footer/footer-pastel-soft.jpg")}
           alt=""
           draggable={false}
           className="h-full w-full object-cover object-[68%_12%]"

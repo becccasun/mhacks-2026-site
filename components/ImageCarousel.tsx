@@ -1,16 +1,17 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { asset } from "@/lib/asset";
 
 const IMAGES = [
-  "/about/about-01.jpg",
-  "/about/about-02.jpg",
-  "/about/about-03.jpg",
-  "/about/about-04.jpg",
-  "/about/about-05.jpg",
-  "/about/about-06.jpg",
-  "/about/about-07.jpg",
-  "/about/about-08.jpg",
+  asset("/about/about-01.jpg"),
+  asset("/about/about-02.jpg"),
+  asset("/about/about-03.jpg"),
+  asset("/about/about-04.jpg"),
+  asset("/about/about-05.jpg"),
+  asset("/about/about-06.jpg"),
+  asset("/about/about-07.jpg"),
+  asset("/about/about-08.jpg"),
 ];
 
 interface Props {

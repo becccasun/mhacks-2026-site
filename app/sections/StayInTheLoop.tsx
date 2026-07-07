@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { SplitReveal } from "@/components/SplitReveal";
 import { EmailSignup } from "@/components/EmailSignup";
+import { asset } from "@/lib/asset";
 
 /**
  * "Stay In The Loop" — email list signup over a soft-focus meadow, in the
@@ -23,7 +24,7 @@ export function StayInTheLoop() {
       <div aria-hidden className="absolute inset-0">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/newsletter/newsletter-bg.jpg"
+          src={asset("/newsletter/newsletter-bg.jpg")}
           alt=""
           draggable={false}
           className="h-full w-full object-cover"

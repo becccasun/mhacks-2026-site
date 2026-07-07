@@ -7,6 +7,7 @@ import { SplitReveal } from "@/components/SplitReveal";
 import { SpeciesLabel } from "@/components/SpeciesLabel";
 import { FlowerStamps } from "@/components/FlowerStamps";
 import { DEADLINES } from "@/lib/deadlines";
+import { asset } from "@/lib/asset";
 
 /**
  * Season timeline — items come from lib/deadlines.ts, the same single source
@@ -80,7 +81,7 @@ export function Timeline() {
           style={{ transformOrigin: "15% 50%" }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/timeline/garland-orange.webp" alt="" draggable={false} className="w-[88%]" />
+          <img src={asset("/timeline/garland-orange.webp")} alt="" draggable={false} className="w-[88%]" />
         </motion.div>
         {/* Species tag in the blank pocket above the vine's dip */}
         <SpeciesLabel

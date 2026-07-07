@@ -7,6 +7,7 @@ import { DotGridReactive } from "@/components/DotGridReactive";
 import { FlowerStamps } from "@/components/FlowerStamps";
 import { SpeciesLabel } from "@/components/SpeciesLabel";
 import { SOCIAL_POSTS, INSTAGRAM_URL, LINKEDIN_URL, TIKTOK_URL } from "@/lib/socials";
+import { asset } from "@/lib/asset";
 
 const HANDLES = [
   { label: "@mhacks_ on Instagram ↗", href: INSTAGRAM_URL },
@@ -68,7 +69,7 @@ export function Social() {
           style={{ transformOrigin: "85% 50%" }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/social/garland-white.webp" alt="" draggable={false} className="ml-auto w-[88%]" />
+          <img src={asset("/social/garland-white.webp")} alt="" draggable={false} className="ml-auto w-[88%]" />
         </motion.div>
         {/* Species tag in the blank pocket above the vine's dip — the one
             non-native species in the set, so it's flagged as invasive */}

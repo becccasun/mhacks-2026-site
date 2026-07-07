@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { AsciiCanvas } from "@/components/AsciiCanvas";
+import { asset } from "@/lib/asset";
 
 interface Props {
   /** Background image continued from the hero. Defaults to the hero backdrop. */
@@ -22,7 +23,7 @@ interface Props {
  * carrying the digital-garden atmosphere into the next section.
  */
 export function HeroBridge({
-  src = "/hero/hero-bg-1.png",
+  src = asset("/hero/hero-bg-1.png"),
   height = 320,
   to = "var(--parchment)",
 }: Props) {

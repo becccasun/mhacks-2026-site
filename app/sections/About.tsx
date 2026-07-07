@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { SplitReveal } from "@/components/SplitReveal";
 import { ImageCarousel } from "@/components/ImageCarousel";
 import { FlowerStamps } from "@/components/FlowerStamps";
+import { asset } from "@/lib/asset";
 
 export function About() {
   const ref = useRef<HTMLElement | null>(null);
@@ -53,7 +54,7 @@ export function About() {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/about/about-09.jpg"
+              src={asset("/about/about-09.jpg")}
               alt=""
               draggable={false}
               className="h-[240px] w-full object-cover"
@@ -82,7 +83,7 @@ export function About() {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/about/about-10.jpg"
+              src={asset("/about/about-10.jpg")}
               alt=""
               draggable={false}
               className="h-[240px] w-full object-cover"

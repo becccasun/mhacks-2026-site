@@ -6,6 +6,7 @@ import { SplitReveal } from "@/components/SplitReveal";
 import { Button } from "@/components/Button";
 import { FlowerStamps } from "@/components/FlowerStamps";
 import { SpeciesLabel } from "@/components/SpeciesLabel";
+import { asset } from "@/lib/asset";
 
 export function Sponsors() {
   const ref = useRef<HTMLElement | null>(null);
@@ -62,7 +63,7 @@ export function Sponsors() {
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/sponsors/branch.webp"
+            src={asset("/sponsors/branch.webp")}
             alt=""
             draggable={false}
             className="ml-auto w-[88%]"
