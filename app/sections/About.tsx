@@ -120,6 +120,18 @@ export function About() {
 
         {/* Centered heading + copy filling the viewport */}
         <div className="flex flex-1 flex-col items-center justify-center text-center">
+          {/* Peach blossom resting above the heading */}
+          <motion.img
+            src={asset("/about/blossom.png")}
+            alt=""
+            aria-hidden
+            draggable={false}
+            initial={{ opacity: 0, scale: 0.7 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
+            viewport={{ once: true, amount: 0.5 }}
+            className="mb-4 w-[84px] select-none md:w-[104px]"
+          />
           <h2
             className="font-display font-medium text-moss-700"
             style={{ fontSize: "clamp(30px, 4vw, 48px)", lineHeight: 1.05, letterSpacing: "-0.015em" }}
