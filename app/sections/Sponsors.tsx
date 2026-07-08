@@ -72,8 +72,11 @@ export function Sponsors() {
         {/* Species tag in the blank pocket above the branch's dip */}
         <SpeciesLabel
           name="Apple Blossom"
-          rotate={-4}
-          className="absolute left-[calc(57%+20px)] top-[calc(6%-20px)] hidden md:flex"
+          species="Malus domestica"
+          status="introduced · state flower"
+          tone="introduced"
+          rotate={0}
+          className="absolute left-[calc(57%+20px)] top-[calc(6%-40px)] hidden md:flex"
         />
       </motion.div>
 
@@ -93,7 +96,7 @@ export function Sponsors() {
           viewport={{ once: true, amount: 0.5 }}
           className="max-w-[480px] self-end text-[17px] leading-[1.6] text-[#dcd8c2]"
         >
-          Our 2026 sponsor lineup is taking shape — check back soon.
+          Our 2026 sponsor lineup is taking shape, check back soon.
         </motion.p>
       </div>
 
@@ -116,8 +119,8 @@ export function Sponsors() {
             Reach 1,000+ technical students from across North America.
           </div>
         </div>
-        <Button href="mailto:sponsor@mhacks.org" variant="glass" size="lg">
-          Get the prospectus →
+        <Button href="mailto:sponsor@mhacks.org" variant="cream" size="md">
+          Interested in sponsoring? Contact us
         </Button>
       </motion.div>
     </section>

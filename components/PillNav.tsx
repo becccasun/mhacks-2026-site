@@ -23,6 +23,7 @@ const DEFAULT_ITEMS: Item[] = [
   { label: "About", href: "#about" },
   { label: "Sponsors", href: "#sponsors" },
   { label: "FAQ", href: "#faq" },
+  { label: "Social Media", href: "#social" },
 ];
 
 export function PillNav({ items = DEFAULT_ITEMS, className, variant = "light", style }: Props) {

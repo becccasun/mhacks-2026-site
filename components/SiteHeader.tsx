@@ -65,11 +65,11 @@ export function SiteHeader() {
           />
         </div>
 
-        {/* Sponsor us + Apply - right; glass pills dissolve to dark text */}
+        {/* Sponsor us + Apply - right; canonical CTA pills in both nav states */}
         <div className="relative z-[2] flex shrink-0 items-center gap-1 md:gap-2">
           <Button
             href="#sponsors"
-            variant={frosted ? "ghost" : "glass"}
+            variant="parchment"
             size="md"
             onClick={(e) => {
               e.preventDefault();
@@ -78,7 +78,7 @@ export function SiteHeader() {
           >
             Sponsor us
           </Button>
-          <Button href="#apply" variant={frosted ? "ghost" : "glass"} size="md">
+          <Button href="#apply" variant="parchment" size="md">
             Apply
           </Button>
         </div>

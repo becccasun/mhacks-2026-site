@@ -85,6 +85,27 @@ html.has-custom-cursor [data-cursor-zone] * {
   cursor: none !important;
 }
 
+/* Interactive elements inside those zones keep the normal cursor — the
+   custom trailers hide themselves over them (see Cursor.tsx). */
+html.has-custom-cursor [data-cursor-zone] a,
+html.has-custom-cursor [data-cursor-zone] a *,
+html.has-custom-cursor [data-cursor-zone] button,
+html.has-custom-cursor [data-cursor-zone] button *,
+html.has-custom-cursor [data-cursor-zone] [data-cursor="hover"],
+html.has-custom-cursor [data-cursor-zone] [data-cursor="hover"] *,
+html.has-custom-cursor [data-cursor-zone] [role="button"] {
+  cursor: pointer !important;
+}
+
+html.has-custom-cursor [data-cursor-zone] input,
+html.has-custom-cursor [data-cursor-zone] textarea {
+  cursor: text !important;
+}
+
+html.has-custom-cursor [data-cursor-zone] select {
+  cursor: default !important;
+}
+
 @media (hover: none), (pointer: coarse) {
   html.has-custom-cursor [data-cursor-zone],
   html.has-custom-cursor [data-cursor-zone] * {

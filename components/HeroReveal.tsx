@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { motion, type MotionValue } from "framer-motion";
+import { AnimatePresence, motion, type MotionValue } from "framer-motion";
 import { cn, isTouchDevice, prefersReducedMotion } from "@/lib/utils";
 import { asset } from "@/lib/asset";
 
@@ -234,7 +234,20 @@ export function HeroReveal({
             transform: "translateZ(0)",
           }}
         >
-          <HeroImage {...imageProps} alt="" hidden />
+          {/* Crossfade between backdrop variants: the outgoing image stays
+              mounted and fades under the incoming one */}
+          <AnimatePresence initial={false}>
+            <motion.div
+              key={src}
+              className="absolute inset-0"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.9, ease: [0.2, 0.8, 0.2, 1] }}
+            >
+              <HeroImage {...imageProps} alt="" hidden />
+            </motion.div>
+          </AnimatePresence>
         </div>
 
         <div
@@ -269,28 +282,27 @@ export function HeroReveal({
         }}
       >
         <div ref={innerRef} className="absolute left-0 top-0 will-change-transform">
-          <HeroImage
-            {...imageProps}
-            alt="A sunlit Michigan meadow with wildflowers"
-            priority
-          />
+          <AnimatePresence initial={false}>
+            <motion.div
+              key={src}
+              className="absolute inset-0"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.9, ease: [0.2, 0.8, 0.2, 1] }}
+            >
+              <HeroImage
+                {...imageProps}
+                alt="MHacks hero backdrop"
+                priority
+              />
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
 
-      {/* Film grain over the whole stage — masks the low-res softness of the
-          blurred plate. Static texture, so it paints once and rides the
-          compositor afterwards. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/></svg>\")",
-          backgroundSize: "180px 180px",
-          mixBlendMode: "overlay",
-          opacity: 0.32,
-        }}
-      />
+      {/* Film grain moved up to the Hero section: blended layers inside this
+          transforming stage forced a re-composite every tilt/scroll frame. */}
 
       <div
         aria-hidden

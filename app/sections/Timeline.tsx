@@ -21,11 +21,25 @@ const EVENT = {
   display: "Oct 3–4",
 };
 
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString("en-US", {
+// Deadlines are official in Ann Arbor time, so pin formatting to Eastern
+// instead of the visitor's timezone — "Aug 7, 11:59pm ET" for everyone.
+function formatDeadline(iso: string) {
+  const d = new Date(iso);
+  const date = d.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
+    timeZone: "America/Detroit",
   });
+  const time = d
+    .toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+      timeZone: "America/Detroit",
+    })
+    .replace(" ", "")
+    .toLowerCase();
+  return `${date}, ${time} ET`;
 }
 
 export function Timeline() {
@@ -46,11 +60,39 @@ export function Timeline() {
       id: d.id,
       label: d.label,
       date: d.date,
-      display: formatDate(d.date),
+      display: formatDeadline(d.date),
     })),
     EVENT,
   ];
   const nextIndex = items.findIndex((i) => new Date(i.date).getTime() > now);
+
+  // Progress vine geometry (md+ horizontal connector). Dot k's center sits
+  // ~8px into column k, i.e. k/6 of the row. Growth is time-accurate: the
+  // stem covers every completed step plus the elapsed fraction of the gap
+  // to the next one — it never touches a dot whose date hasn't arrived.
+  let progressDots = 0;
+  if (nextIndex === -1) {
+    progressDots = items.length - 1;
+  } else if (nextIndex > 0) {
+    const prev = new Date(items[nextIndex - 1].date).getTime();
+    const next = new Date(items[nextIndex].date).getTime();
+    progressDots =
+      nextIndex - 1 + Math.min(1, Math.max(0, (now - prev) / (next - prev)));
+  }
+  const vinePct = (progressDots / items.length) * 100;
+  // The stem svg stretches to the grown width, so its wave count scales with
+  // progress to keep humps a readable size (~2 per completed step). Leaves
+  // attach where the wave crosses its centerline (y=8px) — every hump
+  // boundary except the endpoints — so they always sit on the stem.
+  const humps = Math.max(2, Math.round(progressDots * 4));
+  const vinePath =
+    "M0 8 Q 5 4.5 10 8 " +
+    Array.from({ length: humps - 1 }, (_, i) => `T ${20 + i * 10} 8`).join(" ");
+  const leaves = Array.from({ length: humps - 1 }, (_, i) => ({
+    left: `calc(${(((i + 1) * 100) / humps).toFixed(3)}% - 1px)`,
+    flip: i % 2 === 1,
+    delay: 0.4 + i * 0.12,
+  }));
 
   return (
     <section
@@ -86,8 +128,10 @@ export function Timeline() {
         {/* Species tag in the blank pocket above the vine's dip */}
         <SpeciesLabel
           name="Michigan Lily"
-          rotate={-3}
-          className="absolute left-[calc(20%+50px)] top-[calc(12%-10px)] hidden md:flex"
+          species="Lilium michiganense"
+          status="native wildflower"
+          rotate={0}
+          className="absolute left-[calc(20%+50px)] top-[calc(12%-20px)] hidden min-w-[215px] md:flex"
         />
       </motion.div>
 
@@ -106,22 +150,71 @@ export function Timeline() {
           transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1], delay: 0.15 }}
           viewport={{ once: true, amount: 0.5 }}
         >
-          <Button href="#apply" variant="primary" size="lg" magnetic>
+          <Button href="#apply" variant="cta" size="md">
             Apply now →
           </Button>
         </motion.div>
       </div>
 
       <div className="relative">
-        {/* Connecting line, drawn across as the section scrolls in (md+) */}
+        {/* Dormant remainder of the connector — everything past the current
+            step stays this faint line (md+) */}
         <div className="absolute left-0 right-0 top-[7px] hidden h-[2px] bg-[rgba(58,74,38,0.15)] md:block" />
-        <motion.div
-          initial={{ scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          transition={{ duration: 1.4, ease: [0.65, 0, 0.35, 1], delay: 0.2 }}
-          viewport={{ once: true, amount: 0.4 }}
-          className="absolute left-0 right-0 top-[7px] hidden h-[2px] origin-left bg-[rgba(58,74,38,0.55)] md:block"
-        />
+
+        {/* Progress vine: a dark leaf-green stem grown exactly as far as the
+            season has actually progressed, with leaves riveted to its
+            centerline crossings. */}
+        {progressDots > 0 && (
+          <div
+            aria-hidden
+            className="absolute left-0 top-0 hidden h-4 md:block"
+            style={{ width: `calc(${vinePct.toFixed(3)}% + 8px)` }}
+          >
+            <svg
+              className="absolute inset-0 h-full w-full overflow-visible"
+              viewBox={`0 0 ${humps * 10} 16`}
+              preserveAspectRatio="none"
+              fill="none"
+            >
+              <motion.path
+                d={vinePath}
+                stroke="#3A4A26"
+                strokeWidth="3.5"
+                strokeLinecap="round"
+                vectorEffect="non-scaling-stroke"
+                initial={{ pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                transition={{ duration: 1.2, ease: [0.65, 0, 0.35, 1], delay: 0.2 }}
+                viewport={{ once: true, amount: 0.4 }}
+              />
+            </svg>
+            {leaves.map((leaf) => (
+              <span
+                key={leaf.left}
+                className="absolute"
+                style={{
+                  left: leaf.left,
+                  // Leaf bases sit at y≈8px — inside the 3px stem stroke —
+                  // so every leaf visibly grows out of the vine.
+                  top: leaf.flip ? 7 : -3,
+                  transform: leaf.flip ? "scaleY(-1)" : undefined,
+                }}
+              >
+                <motion.svg
+                  viewBox="0 0 12 10"
+                  className="block w-[14px]"
+                  initial={{ opacity: 0, scale: 0 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, ease: [0.2, 0.8, 0.2, 1], delay: leaf.delay }}
+                  viewport={{ once: true, amount: 0.4 }}
+                  style={{ transformOrigin: "8% 92%" }}
+                >
+                  <path d="M1 9 C1 4 5 1 11 1 C11 7 7 10 1 9 Z" fill="#3A4A26" opacity={0.9} />
+                </motion.svg>
+              </span>
+            ))}
+          </div>
+        )}
 
         <ol className="grid grid-cols-2 gap-x-6 gap-y-12 md:grid-cols-6">
           {items.map((item, i) => {

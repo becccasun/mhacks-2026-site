@@ -5,18 +5,32 @@ import { motion } from "framer-motion";
 /**
  * Sticker-style species tag for the botanical garlands. The site's flowers
  * are a Michigan-flora highlight, so each garland gets an identifying label
- * tucked into a dip in its vine (positioned by the parent). Lily of the
- * valley is the one non-native in the set, so it carries an invasive note
- * instead of the usual "Michigan native" caption.
+ * tucked into a dip in its vine (positioned by the parent): common name,
+ * scientific name, and what kind of plant it is plus whether it's actually
+ * native to Michigan.
  */
+type Tone = "native" | "introduced" | "invasive";
+
+const TONE_COLOR: Record<Tone, string> = {
+  native: "text-moss-500",
+  introduced: "text-[#8A6D2B]",
+  invasive: "text-[#A2542C]",
+};
+
 export function SpeciesLabel({
   name,
-  invasive = false,
+  species,
+  status,
+  tone = "native",
   rotate = -3,
   className = "",
 }: {
   name: string;
-  invasive?: boolean;
+  /** Scientific (Latin) name, shown in italics under the common name. */
+  species: string;
+  /** Plant type + provenance, e.g. "native wildflower". */
+  status: string;
+  tone?: Tone;
   rotate?: number;
   className?: string;
 }) {
@@ -32,12 +46,13 @@ export function SpeciesLabel({
       <span className="font-serif-it text-[15px] leading-tight text-moss-700">
         {name}
       </span>
+      <span className="mt-0.5 font-serif-it text-[11px] italic leading-tight text-moss-500">
+        {species}
+      </span>
       <span
-        className={`mt-1 font-mono text-[9px] uppercase tracking-[0.2em] ${
-          invasive ? "text-[#A2542C]" : "text-moss-500"
-        }`}
+        className={`mt-1 font-mono text-[9px] uppercase tracking-[0.2em] ${TONE_COLOR[tone]}`}
       >
-        {invasive ? "invasive species" : "michigan native"}
+        {status}
       </span>
     </motion.div>
   );

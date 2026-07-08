@@ -5,7 +5,7 @@ import { forwardRef } from "react";
 import { useMagnetic } from "@/lib/useMagnetic";
 import { cn } from "@/lib/utils";
 
-type Variant = "primary" | "secondary" | "outline" | "ghost" | "accent" | "cream" | "glass";
+type Variant = "cta" | "primary" | "secondary" | "outline" | "ghost" | "accent" | "cream" | "glass" | "parchment";
 type Size = "sm" | "md" | "lg";
 
 interface Props extends Omit<HTMLMotionProps<"a">, "ref"> {
@@ -15,8 +15,15 @@ interface Props extends Omit<HTMLMotionProps<"a">, "ref"> {
   href?: string;
 }
 
+/** Canonical call-to-action treatment: every CTA on the site (header
+    Sponsor us/Apply, hero Apply Now, prospectus, timeline Apply now) uses
+    `variant="cta" size="md"` so fill, radius, padding, and weight stay in
+    lockstep. Arrows, where used, live inline in the label text. */
+const CTA_STYLE = "bg-moss-700 text-cream hover:bg-moss-800";
+
 const variants: Record<Variant, string> = {
-  primary: "bg-moss-700 text-cream hover:bg-moss-800",
+  cta: CTA_STYLE,
+  primary: CTA_STYLE,
   secondary: "bg-cream text-ink hover:bg-white",
   outline: "border border-border-strong text-moss-700 hover:bg-moss-700/10",
   ghost: "text-moss-700 hover:bg-moss-700/10",
@@ -24,6 +31,9 @@ const variants: Record<Variant, string> = {
   cream: "bg-cream text-moss-700 hover:bg-white",
   glass:
     "liquid-glass text-cream font-semibold [text-shadow:0_1px_8px_rgba(20,30,10,0.45)]",
+  // Off-white pill matching the About section's parchment background, with
+  // near-black-green text for contrast.
+  parchment: "bg-parchment text-ink hover:bg-cream",
 };
 
 const sizes: Record<Size, string> = {

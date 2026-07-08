@@ -12,27 +12,27 @@ import { asset } from "@/lib/asset";
 const FAQS = [
   {
     q: "Who can apply?",
-    a: "Any current undergraduate or graduate student is welcome. You don't need to be a CS major — designers, hardware tinkerers, and first-time hackers are encouraged to apply.",
+    a: "Any current undergraduate or graduate student is welcome to apply. You don't need to be a CS major. First-time hackers, designers, hardware tinkerers, and builders are all welcome. If you are looking to build something meaningful, you are encouraged to apply.",
   },
   {
     q: "Is there a cost to attend?",
-    a: "No. MHacks is free for accepted hackers, including meals, swag, and mentorship. Travel reimbursement is available for select schools.",
+    a: "No, MHacks is free for accepted hackers, including meals and swag. Travel reimbursement is available on a limited basis. We do not provide living accommodations, but the hacking location will be open 24 hours.",
   },
   {
     q: "Do I need a team?",
-    a: "Nope. You can apply solo and form a team of up to four during opening ceremonies. We host team-matching on Friday evening.",
+    a: "Nope, you can apply solo or form a team of up to four. We will host a team matching session on the first day of the hackathon.",
   },
   {
     q: "What should I build?",
-    a: "Anything. Past projects have spanned AI agents, hardware wearables, climate tools, games, and creative installations. Sponsor tracks offer focused prize categories.",
+    a: "Anything pertaining to our upcoming tracks. Past projects have spanned AI agents, hardware, wearables, climate tools, games, creative installations, and more. Sponsor tracks offer focused prize categories.",
   },
   {
     q: "When do applications close?",
-    a: "Applications open in early summer and close September 15, 2026. Decisions roll out two weeks later.",
+    a: "Early applications are due August 7th, and regular applications are due September 12th, 2026. Decisions will be out approximately one week after each deadline.",
   },
   {
     q: "Where does the event happen?",
-    a: "North Campus of the University of Michigan in Ann Arbor. Detailed venue and logistics ship with your acceptance email.",
+    a: "North Campus of the University of Michigan in Ann Arbor. Detailed venue and logistics will become public as we get closer to the event date.",
   },
 ];
 
@@ -62,7 +62,7 @@ export function Faq() {
       ref={ref}
       id="faq"
       data-nav-theme="light"
-      className="relative z-[9] -mt-14 md:-mt-20 min-h-screen rounded-t-[40px] md:rounded-t-[48px] bg-parchment px-6 md:px-[8vw] pt-24 pb-32 md:pt-32 md:pb-[260px]"
+      className="relative z-[7] -mt-14 md:-mt-20 min-h-screen rounded-t-[40px] md:rounded-t-[48px] bg-parchment px-6 md:px-[8vw] pt-24 pb-32 md:pt-32 md:pb-[260px]"
       style={{
         backgroundImage: "radial-gradient(rgba(58,74,38,0.16) 1px, transparent 1.4px)",
         backgroundSize: "26px 26px",
@@ -182,8 +182,10 @@ export function Faq() {
         {/* Species tag planted at the base of the trio */}
         <SpeciesLabel
           name="Dwarf Lake Iris"
-          rotate={-5}
-          className="absolute -left-[200px] bottom-[28px] flex"
+          species="Iris lacustris"
+          status="native · state wildflower"
+          rotate={0}
+          className="absolute -left-[260px] bottom-[28px] flex"
         />
         {violets.map((v) => (
           <motion.div

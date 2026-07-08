@@ -97,23 +97,19 @@ export function Cursor() {
         style={{
           transition:
             "width 260ms var(--ease-soft), height 260ms var(--ease-soft), border-radius 260ms var(--ease-soft), border-color 260ms, background 260ms, opacity 260ms",
-          width: boxLabel ? 300 : hovering ? 56 : 34,
-          height: boxLabel ? 400 : hovering ? 56 : 34,
+          width: boxLabel ? 300 : 34,
+          height: boxLabel ? 400 : 34,
           borderRadius: boxLabel ? 2 : "999px",
           border: `1px solid ${
-            boxLabel
-              ? "rgba(245,241,222,0.95)"
-              : hovering
-              ? "rgba(239,233,212,0.95)"
-              : "rgba(58,74,38,0.55)"
+            boxLabel ? "rgba(245,241,222,0.95)" : "rgba(58,74,38,0.55)"
           }`,
           background: boxLabel
             ? "rgba(245,241,222,0.03)"
-            : hovering
-            ? "rgba(232,211,90,0.15)"
             : "rgba(239,233,212,0.06)",
-          mixBlendMode: boxLabel ? "normal" : hovering ? "screen" : "multiply",
-          opacity: visible ? 1 : 0,
+          mixBlendMode: boxLabel ? "normal" : "multiply",
+          // Interactive elements get the native cursor instead — trailers
+          // duck out so the two never show together.
+          opacity: visible && !hovering ? 1 : 0,
         }}
       >
         {/* Dither screen: offset light/dark dot grids over a contrast-crunched
@@ -207,11 +203,11 @@ export function Cursor() {
         className="pointer-events-none fixed left-0 top-0 z-[9999] hidden md:block"
         style={{
           transition: "width 200ms var(--ease-soft), height 200ms var(--ease-soft), background 200ms, opacity 200ms",
-          width: hovering ? 6 : 4,
-          height: hovering ? 6 : 4,
+          width: 4,
+          height: 4,
           borderRadius: "999px",
-          background: hovering ? "#E8D35A" : "#3A4A26",
-          opacity: visible && !boxLabel ? 1 : 0,
+          background: "#3A4A26",
+          opacity: visible && !boxLabel && !hovering ? 1 : 0,
         }}
       />
     </>

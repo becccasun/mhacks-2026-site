@@ -1,10 +1,12 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SplitReveal } from "@/components/SplitReveal";
 import { ImageCarousel } from "@/components/ImageCarousel";
 import { FlowerStamps } from "@/components/FlowerStamps";
+import { AsciiBloom } from "@/components/AsciiBloom";
+import { AsciiCanvas } from "@/components/AsciiCanvas";
 import { asset } from "@/lib/asset";
 
 export function About() {
@@ -13,14 +15,26 @@ export function About() {
     target: ref,
     offset: ["start end", "start start"],
   });
-  const tabY = useTransform(scrollYProgress, [0, 1], [72, 0]);
+  // Starts exactly equal to the -mt-28 pull-up (112px), so at page load the
+  // sheet's top sits flush with the hero's bottom edge — the hero owns the
+  // full first viewport and About only appears once you scroll. The -mt pulls
+  // the section 112px into the viewport before any scrolling, so progress at
+  // load is 112/viewportHeight, not 0 — anchor the ramp there.
+  const [loadProgress, setLoadProgress] = useState(0);
+  useEffect(() => {
+    const update = () => setLoadProgress(112 / window.innerHeight);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+  const tabY = useTransform(scrollYProgress, [loadProgress, 1], [112, 0]);
 
   return (
     <section
       ref={ref}
       id="about"
       data-nav-theme="light"
-      className="relative z-[5] -mt-20 md:-mt-28 w-full pb-0"
+      className="relative z-[5] -mt-28 w-full pb-0"
     >
       <motion.div
         style={{
@@ -52,13 +66,19 @@ export function About() {
             style={{ boxShadow: "0 0 0 rgba(29,36,18,0)" }}
             className="w-[400px] bg-white p-3 pb-4"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={asset("/about/about-09.jpg")}
-              alt=""
-              draggable={false}
-              className="h-[240px] w-full object-cover"
-            />
+            {/* Soft-focus photo under a cursor-reactive ASCII field — the
+                polaroid reads as a "digitized" memory. Overscaled slightly so
+                the blur never shows a hard edge. */}
+            <div className="relative h-[240px] w-full overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={asset("/about/about-09.jpg")}
+                alt=""
+                draggable={false}
+                className="h-full w-full scale-[1.06] object-cover blur-[3px]"
+              />
+              <AsciiCanvas className="absolute inset-0" step={12} fontSize={10} opacity={0.65} />
+            </div>
             <div className="mt-3 text-center font-serif-it text-[17px] text-moss-700">
               ann arbor, mi
             </div>
@@ -81,13 +101,17 @@ export function About() {
             style={{ boxShadow: "0 0 0 rgba(29,36,18,0)" }}
             className="w-[400px] bg-white p-3 pb-4"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={asset("/about/about-10.jpg")}
-              alt=""
-              draggable={false}
-              className="h-[240px] w-full object-cover"
-            />
+            {/* Same digitized treatment as its twin on the right edge */}
+            <div className="relative h-[240px] w-full overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={asset("/about/about-10.jpg")}
+                alt=""
+                draggable={false}
+                className="h-full w-full scale-[1.06] object-cover blur-[3px]"
+              />
+              <AsciiCanvas className="absolute inset-0" step={12} fontSize={10} opacity={0.65} />
+            </div>
             <div className="mt-3 text-center font-serif-it text-[17px] text-moss-700">
               university of michigan
             </div>
@@ -126,10 +150,7 @@ export function About() {
             viewport={{ once: true, amount: 0.5 }}
             className="mt-12 flex items-center justify-center gap-3 text-moss-500"
           >
-            <pre
-              aria-hidden
-              className="font-mono text-[9px] leading-[1.15]"
-            >{"\\ | /\n-(*)-\n/ | \\"}</pre>
+            <AsciiBloom className="font-mono text-[9px] leading-[1.15]" />
             <span className="relative font-mono text-[13px] tracking-[0.08em]">
               Click around the canvas for some fun.
               {/* Hand-drawn marker underline, drawn on when scrolled into

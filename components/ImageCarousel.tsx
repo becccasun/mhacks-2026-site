@@ -38,7 +38,7 @@ export function ImageCarousel({ images = IMAGES, className }: Props) {
               <img
                 key={src}
                 src={src}
-                alt={copy === 0 ? `MHacks photo ${i + 1}` : ""}
+                alt={`MHacks photo ${i + 1}`}
                 loading="lazy"
                 draggable={false}
                 className="h-[200px] md:h-[240px] aspect-[3/2] rounded-md border border-border object-cover select-none"

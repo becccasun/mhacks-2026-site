@@ -32,10 +32,10 @@ export function DeadlineCountdown({ className }: { className?: string }) {
     <div
       role="timer"
       aria-label={`${next.countdownLabel} in ${t.days} days, ${t.hours} hours, ${t.minutes} minutes`}
-      className={`inline-flex items-center rounded-pill border border-white/40 bg-[rgba(29,36,18,0.5)] px-4 py-1.5 backdrop-blur-sm ${className ?? ""}`}
+      className={`inline-flex items-center rounded-pill border border-white/40 bg-[rgba(24,24,24,0.5)] px-4 py-1.5 backdrop-blur-sm ${className ?? ""}`}
     >
       <span
-        className="font-mono text-[11px] uppercase tracking-[0.18em] text-cream"
+        className="font-mono text-[11px] uppercase tracking-[0.18em] text-[#f2f2f2]"
         style={{ fontVariantNumeric: "tabular-nums" }}
       >
         {next.countdownLabel} in {t.days}d {pad(t.hours)}h {pad(t.minutes)}m {pad(t.seconds)}s

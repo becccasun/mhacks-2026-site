@@ -75,9 +75,11 @@ export function Social() {
             non-native species in the set, so it's flagged as invasive */}
         <SpeciesLabel
           name="Lily of the Valley"
-          invasive
-          rotate={3}
-          className="absolute left-[60%] top-[calc(14%-20px)] hidden md:flex"
+          species="Convallaria majalis"
+          status="invasive groundcover"
+          tone="invasive"
+          rotate={0}
+          className="absolute left-[60%] top-[calc(14%-30px)] hidden md:flex"
         />
       </motion.div>
 

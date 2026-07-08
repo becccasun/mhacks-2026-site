@@ -1,6 +1,8 @@
 "use client";
 
+import { motion, useReducedMotion } from "framer-motion";
 import { Logo } from "@/components/Logo";
+import { SpeciesLabel } from "@/components/SpeciesLabel";
 import { scrollToHash } from "@/lib/scroll";
 import { asset } from "@/lib/asset";
 
@@ -8,6 +10,7 @@ const LINKS = [
   { label: "About", href: "#about" },
   { label: "Sponsors", href: "#sponsors" },
   { label: "FAQ", href: "#faq" },
+  { label: "Social Media", href: "#social" },
   { label: "Contact", href: "mailto:hello@mhacks.org" },
 ];
 
@@ -23,6 +26,7 @@ const GRAIN =
  * through. (The giant MHACKS 2026 wordmark is removed for now.)
  */
 export function Footer() {
+  const reduced = useReducedMotion();
   return (
     <footer
       data-nav-theme="dark"
@@ -68,6 +72,55 @@ export function Footer() {
             backgroundSize: "150px 150px",
             opacity: 0.16,
           }}
+        />
+      </div>
+
+      {/* Michigan lily garland — migrated from the retired Timeline section.
+          Slides in from the left, then sways idly across the footer's top. */}
+      <motion.div
+        aria-hidden
+        initial={{ x: reduced ? 0 : "-24%", opacity: 0 }}
+        whileInView={{ x: 0, opacity: 1 }}
+        transition={{ duration: 1.2, ease: [0.2, 0.8, 0.2, 1] }}
+        viewport={{ once: true, amount: 0.2 }}
+        className="pointer-events-none relative z-10 pt-12 md:pt-16"
+      >
+        <motion.div
+          animate={
+            reduced ? undefined : { rotate: [0.9, -1.2, 0.9], y: [-7, 8, -7] }
+          }
+          transition={{ duration: 5.8, repeat: Infinity, ease: "easeInOut" }}
+          style={{ transformOrigin: "15% 50%" }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={asset("/timeline/garland-orange.webp")}
+            alt=""
+            draggable={false}
+            className="w-[88%]"
+          />
+        </motion.div>
+        <SpeciesLabel
+          name="Michigan Lily"
+          species="Lilium michiganense"
+          status="native wildflower"
+          rotate={0}
+          className="absolute left-[calc(20%+50px)] top-[calc(18%-10px)] hidden min-w-[215px] md:flex"
+        />
+      </motion.div>
+
+      {/* "Brought to you by the MHacks Team" banner in the open field between
+          the garland and the footer nav — centered under the second lily from
+          the right (the garland spans 88% of the row, so this tracks it
+          proportionally at any width) */}
+      <div className="relative z-10 pt-[10px] md:pt-[26px]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={asset("/footer/brought-to-you.png")}
+          alt="Brought to you by the MHacks Team"
+          draggable={false}
+          className="w-[min(66%,570px)] -translate-x-1/2"
+          style={{ marginLeft: "69.7%" }}
         />
       </div>
 

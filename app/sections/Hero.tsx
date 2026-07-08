@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
 import { HeroReveal } from "@/components/HeroReveal";
 import { MlhBadge } from "@/components/MlhBadge";
@@ -9,10 +9,30 @@ import { DeadlineCountdown } from "@/components/DeadlineCountdown";
 import { AsciiGlow } from "@/components/AsciiGlow";
 import { ScrambleText } from "@/components/ScrambleText";
 import { prefersReducedMotion } from "@/lib/utils";
+import { asset } from "@/lib/asset";
+
+/* Static film grain tile — masks the blurred plate's pixelation. Lives on the
+   section (not inside the transforming stage) with no blend mode, so it
+   composites once instead of every tilt/scroll frame. */
+const GRAIN =
+  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.8'/></svg>\")";
+
+/* Hero backdrop variants, switched by the icon buttons above the countdown.
+   `src: null` keeps HeroReveal's default multi-resolution meadow set. The
+   blur + dot-grid + ASCII treatment is applied by HeroReveal/AsciiGlow in
+   CSS, so it covers every variant automatically. */
+const HERO_BGS = [
+  { id: "leaf", icon: "/hero/icon-leaf.png", label: "Meadow backdrop", src: null },
+  { id: "flower", icon: "/hero/icon-flower.png", label: "Peony garden backdrop", src: "/hero/hero-flower.jpg" },
+  { id: "cloud", icon: "/hero/icon-cloud.png", label: "Sky backdrop", src: "/hero/hero-cloud.jpg" },
+] as const;
+
+type HeroBgId = (typeof HERO_BGS)[number]["id"];
 
 export function Hero() {
   const ref = useRef<HTMLElement | null>(null);
   const reducedRef = useRef(false);
+  const [bgId, setBgId] = useState<HeroBgId>("leaf");
 
   useEffect(() => {
     reducedRef.current = prefersReducedMotion();
@@ -57,6 +77,16 @@ export function Hero() {
 
   const bgScale = useTransform(scrollYProgress, [0, 1], [1.02, 1.14]);
   const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "-6%"]);
+
+  const activeBg = HERO_BGS.find((b) => b.id === bgId)!;
+  const bgProps = activeBg.src
+    ? {
+        src: asset(activeBg.src),
+        src768: asset(activeBg.src),
+        src2560: asset(activeBg.src),
+        src3840: asset(activeBg.src),
+      }
+    : {};
   // The meta row tracks the title's drift so the lockup stays intact while fading.
   const metaOpacity = useTransform(scrollYProgress, [0, 0.35], [1, 0]);
 
@@ -80,7 +110,7 @@ export function Hero() {
           className="absolute inset-0 will-change-transform"
           style={{ rotateX: tiltX, rotateY: tiltY, x: shiftX, y: shiftY, scale: 1.06 }}
         >
-          <HeroReveal scale={bgScale} y={bgY} />
+          <HeroReveal scale={bgScale} y={bgY} {...bgProps} />
         </motion.div>
       </div>
 
@@ -109,6 +139,24 @@ export function Hero() {
         }}
       />
 
+      {/* Top gradient band behind the headline/CTA/badge — fades out by 40%
+          so the lower meadow stays untouched */}
+      <div
+        aria-hidden
+        className="absolute inset-0 z-[2] pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(to bottom, rgba(0,0,0,0.15), transparent 40%)",
+        }}
+      />
+
+      {/* Film grain — static, unblended, outside the transformed layers */}
+      <div
+        aria-hidden
+        className="absolute inset-0 z-[2] pointer-events-none"
+        style={{ backgroundImage: GRAIN, backgroundSize: "140px 140px", opacity: 0.38 }}
+      />
+
       {/* Meta row + giant title, edge-aligned as one lockup */}
       <div className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center pt-16">
         {/* Width is set by the title, so the meta row spans exactly its edges. */}
@@ -117,14 +165,40 @@ export function Hero() {
               doesn't push the title off vertical center */}
           <motion.div
             style={{ opacity: metaOpacity, y: titleY }}
-            className="absolute -top-14 left-0 right-0 flex justify-center md:-top-16"
+            className="absolute -top-[118px] left-0 right-0 flex justify-center md:-top-[126px]"
           >
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1], delay: 0.2 }}
-              className="pointer-events-auto"
+              className="pointer-events-auto flex flex-col items-center gap-3"
             >
+              {/* Backdrop switcher — one icon per hero variant */}
+              <div className="flex items-center justify-center gap-3">
+                {HERO_BGS.map((b) => (
+                  <button
+                    key={b.id}
+                    type="button"
+                    aria-label={b.label}
+                    aria-pressed={bgId === b.id}
+                    data-cursor="hover"
+                    onClick={() => setBgId(b.id)}
+                    className={`grid h-12 w-12 place-items-center transition-all duration-300 ${
+                      bgId === b.id
+                        ? "scale-110 opacity-100 drop-shadow-[0_2px_10px_rgba(20,30,10,0.5)]"
+                        : "opacity-60 hover:scale-105 hover:opacity-95"
+                    }`}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={asset(b.icon)}
+                      alt=""
+                      draggable={false}
+                      className="h-10 w-10 object-contain"
+                    />
+                  </button>
+                ))}
+              </div>
               <DeadlineCountdown />
             </motion.div>
           </motion.div>
