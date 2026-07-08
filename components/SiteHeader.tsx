@@ -47,8 +47,10 @@ export function SiteHeader() {
           <Logo size={44} priority />
         </div>
 
-        {/* Nav - centered; pill container dissolves on the frosted bar */}
-        <div className="absolute left-1/2 top-1/2 z-[1] -translate-x-1/2 -translate-y-1/2">
+        {/* Nav - centered; pill container dissolves on the frosted bar.
+            Hidden on mobile — it collides with the logo and action buttons,
+            and the footer nav covers in-page links there. */}
+        <div className="absolute left-1/2 top-1/2 z-[1] hidden -translate-x-1/2 -translate-y-1/2 md:block">
           <PillNav
             className="transition-[background,border-color,box-shadow] duration-300"
             style={

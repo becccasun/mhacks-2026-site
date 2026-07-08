@@ -208,7 +208,7 @@ export function Hero() {
               y: titleY,
               scale: titleScale,
               opacity: titleOpacity,
-              fontSize: "clamp(76px, 15vw, 250px)",
+              fontSize: "clamp(44px, 15vw, 250px)",
               lineHeight: 0.9,
               letterSpacing: "-0.025em",
               textShadow: "0 6px 40px rgba(20,30,10,0.35)",
@@ -220,7 +220,7 @@ export function Hero() {
 
           <motion.div
             style={{ opacity: metaOpacity, y: titleY }}
-            className="flex flex-wrap items-baseline justify-between gap-x-16 gap-y-2 px-1"
+            className="flex flex-col items-center gap-y-2 px-4 text-center md:flex-row md:flex-wrap md:items-baseline md:justify-between md:gap-x-16 md:px-1 md:text-left"
           >
             <motion.div
               initial={{ opacity: 0, y: 10 }}
@@ -232,7 +232,7 @@ export function Hero() {
                 replayOnHover
                 speed={34}
                 data-cursor="hover"
-                className="pointer-events-auto text-cream text-[12px] md:text-[15px] font-medium uppercase tracking-[0.3em] [text-shadow:0_1px_12px_rgba(20,30,10,0.55)]"
+                className="pointer-events-auto text-cream text-[11px] md:text-[15px] font-medium uppercase tracking-[0.18em] md:tracking-[0.3em] [text-shadow:0_1px_12px_rgba(20,30,10,0.55)]"
               />
             </motion.div>
             <motion.div
@@ -245,7 +245,7 @@ export function Hero() {
                 replayOnHover
                 speed={34}
                 data-cursor="hover"
-                className="pointer-events-auto text-cream text-right text-[12px] md:text-[15px] font-medium uppercase tracking-[0.3em] [text-shadow:0_1px_12px_rgba(20,30,10,0.55)]"
+                className="pointer-events-auto text-cream text-center md:text-right text-[11px] md:text-[15px] font-medium uppercase tracking-[0.18em] md:tracking-[0.3em] [text-shadow:0_1px_12px_rgba(20,30,10,0.55)]"
               />
             </motion.div>
           </motion.div>

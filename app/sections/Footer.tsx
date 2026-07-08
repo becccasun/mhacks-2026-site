@@ -119,8 +119,7 @@ export function Footer() {
           src={asset("/footer/brought-to-you.png")}
           alt="Brought to you by the MHacks Team"
           draggable={false}
-          className="w-[min(66%,570px)] -translate-x-1/2"
-          style={{ marginLeft: "69.7%" }}
+          className="mx-auto block w-[78%] max-w-[420px] md:mx-0 md:w-[min(66%,570px)] md:max-w-none md:ml-[69.7%] md:-translate-x-1/2"
         />
       </div>
 
@@ -133,7 +132,7 @@ export function Footer() {
           />
 
           <nav
-            className="flex flex-wrap justify-center gap-8 text-[15px] [text-shadow:0_1px_12px_rgba(29,36,18,0.45)]"
+            className="flex flex-wrap justify-center gap-x-6 gap-y-3 text-[15px] [text-shadow:0_1px_12px_rgba(29,36,18,0.45)] md:gap-8"
             aria-label="Footer"
           >
             {LINKS.map((l) => (
