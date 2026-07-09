@@ -48,9 +48,10 @@ export function SiteHeader() {
         </div>
 
         {/* Nav - centered; pill container dissolves on the frosted bar.
-            Hidden on mobile — it collides with the logo and action buttons,
-            and the footer nav covers in-page links there. */}
-        <div className="absolute left-1/2 top-1/2 z-[1] hidden -translate-x-1/2 -translate-y-1/2 md:block">
+            Hidden below lg — under ~1024px the centered pill collides with
+            the logo/badge and action buttons, and the footer nav covers
+            in-page links on small screens. */}
+        <div className="absolute left-1/2 top-1/2 z-[1] hidden -translate-x-1/2 -translate-y-1/2 lg:block">
           <PillNav
             className="transition-[background,border-color,box-shadow] duration-300"
             style={
