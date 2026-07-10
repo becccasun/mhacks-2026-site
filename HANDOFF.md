@@ -54,8 +54,8 @@ Each item is a "same shape, swap the source" change. The files carry
 | # | What | Where | Change |
 |---|------|-------|--------|
 | 1 | Application portal link | `components/SiteHeader.tsx:83` (also the retired `app/sections/Timeline.tsx:153`) | Replace placeholder `href="#apply"` with the real portal URL |
-| 2 | Deadlines / countdown | `lib/deadlines.ts` | Replace the `DEADLINES` constant with fetched data of the same shape; the hero countdown pill reads only this array. Dates are ISO 8601 with explicit Eastern offsets |
-| 3 | Instagram feed | `lib/socials.ts` | Replace `SOCIAL_POSTS` with Instagram Graph API data (same shape). Keep images self-hosted — IG CDN URLs expire |
+| 2 | Deadlines / countdown / schedule | `lib/deadlines.ts` | Replace the `DEADLINES` constant with fetched data of the same shape; the hero countdown pill **and** the Timeline schedule section (`app/sections/Schedule.tsx`) read only this array. Dates are ISO 8601 with explicit Eastern offsets |
+| 3 | Instagram feed | `lib/socials.ts` | The social-gallery section was replaced by the Timeline schedule and no longer exists in `app/page.tsx`; this data module (and `/public/social`) remains if it's rebuilt. If used: replace `SOCIAL_POSTS` with Instagram Graph API data (same shape), keep images self-hosted — IG CDN URLs expire |
 | 4 | Email signup | `components/EmailSignup.tsx:20` | `TODO(backend)`: POST the address to the mailing-list provider; surface errors in the existing submitted state. Note: the newsletter section (`app/sections/StayInTheLoop.tsx`) is built but not currently mounted in `app/page.tsx` |
 | 5 | Contact / sponsor email | `app/sections/Sponsors.tsx`, `app/sections/Footer.tsx`, `app/sections/Faq.tsx` | Already real `mailto:` links (`sponsor@` / `hello@mhacks.org`); nothing to do unless a form is wanted |
 

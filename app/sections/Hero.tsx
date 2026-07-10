@@ -7,8 +7,9 @@ import { MlhBadge } from "@/components/MlhBadge";
 import { Typewriter } from "@/components/Typewriter";
 import { DeadlineCountdown } from "@/components/DeadlineCountdown";
 import { AsciiGlow } from "@/components/AsciiGlow";
-import { ScrambleText } from "@/components/ScrambleText";
+import { Button } from "@/components/Button";
 import { prefersReducedMotion } from "@/lib/utils";
+import { scrollToHash } from "@/lib/scroll";
 import { asset } from "@/lib/asset";
 
 /* Static film grain tile — masks the blurred plate's pixelation. Lives on the
@@ -123,6 +124,9 @@ export function Hero() {
         style={{ x: starX, y: starY }}
       >
         <AsciiGlow />
+        {/* Mobile gets a second, denser field: with the lighter blur the
+            ASCII overlay carries the "digitized" treatment there */}
+        <AsciiGlow className="md:hidden" cell={14} density={0.55} />
       </motion.div>
 
       {/* MLH trust badge, resting on the hero's top edge — scrolls away with
@@ -227,26 +231,48 @@ export function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1], delay: 0.15 }}
             >
-              <ScrambleText
-                text="Build something that grows."
-                replayOnHover
-                speed={34}
-                data-cursor="hover"
-                className="pointer-events-auto text-cream text-[11px] md:text-[13px] lg:text-[15px] font-medium uppercase tracking-[0.18em] lg:tracking-[0.3em] [text-shadow:0_1px_12px_rgba(20,30,10,0.55)]"
-              />
+              <span className="text-cream text-[11px] md:text-[13px] lg:text-[15px] font-medium uppercase tracking-[0.18em] lg:tracking-[0.3em] [text-shadow:0_1px_12px_rgba(20,30,10,0.55)]">
+                Build something that grows.
+              </span>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1], delay: 0.3 }}
             >
-              <ScrambleText
-                text="October 3—4, 2026 · Ann Arbor, Michigan"
-                replayOnHover
-                speed={34}
-                data-cursor="hover"
-                className="pointer-events-auto text-cream text-center lg:text-right text-[11px] md:text-[13px] lg:text-[15px] font-medium uppercase tracking-[0.18em] lg:tracking-[0.3em] [text-shadow:0_1px_12px_rgba(20,30,10,0.55)]"
-              />
+              <span className="block text-cream text-center lg:text-right text-[11px] md:text-[13px] lg:text-[15px] font-medium uppercase tracking-[0.18em] lg:tracking-[0.3em] [text-shadow:0_1px_12px_rgba(20,30,10,0.55)]">
+                October 3—4, 2026 · Ann Arbor, Michigan
+              </span>
+            </motion.div>
+          </motion.div>
+
+          {/* Mobile CTAs — the header's Apply/Sponsor us pills live here on
+              small screens, stacked under the date line */}
+          <motion.div
+            style={{ opacity: metaOpacity, y: titleY }}
+            className="flex justify-center md:hidden"
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1], delay: 0.4 }}
+              className="pointer-events-auto mt-2 flex flex-col items-center gap-3"
+            >
+              <Button href="#apply" variant="cta" size="md" className="w-[200px]">
+                Apply
+              </Button>
+              <Button
+                href="#sponsors"
+                variant="parchment"
+                size="md"
+                className="w-[200px]"
+                onClick={(e) => {
+                  e.preventDefault();
+                  scrollToHash("#sponsors");
+                }}
+              >
+                Sponsor us
+              </Button>
             </motion.div>
           </motion.div>
         </div>

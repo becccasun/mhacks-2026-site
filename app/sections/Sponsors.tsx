@@ -85,9 +85,17 @@ export function Sponsors() {
           className="self-start font-display font-medium text-cream"
           style={{ fontSize: "clamp(30px, 4vw, 48px)", lineHeight: 1.05, letterSpacing: "-0.015em" }}
         >
-          <SplitReveal as="span" className="block">
-            {"Our Sponsors"}
-          </SplitReveal>
+          <span className="flex items-center gap-3">
+            <SplitReveal as="span" className="block">
+              {"Our Sponsors"}
+            </SplitReveal>
+            <span
+              aria-hidden
+              className="font-mono text-[0.42em] tracking-[0.08em] text-cream/60"
+            >
+              {"ᯓ★ˎˊ˗"}
+            </span>
+          </span>
         </h2>
         <motion.p
           initial={{ opacity: 0, y: 12 }}
@@ -113,14 +121,16 @@ export function Sponsors() {
       >
         <div>
           <div className="font-serif-it text-cream" style={{ fontSize: 32, lineHeight: 1.1 }}>
-            Sponsor MHacks 2026.
+            <span className="md:hidden">Sponsor MHacks.</span>
+            <span className="hidden md:inline">Sponsor MHacks 2026.</span>
           </div>
           <div className="mt-2 text-[14px] text-[#bdc59a]">
             Reach 1,000+ technical students from across North America.
           </div>
         </div>
         <Button href="mailto:sponsor@mhacks.org" variant="cream" size="md">
-          Interested in sponsoring? Contact us
+          <span className="md:hidden">Contact us</span>
+          <span className="hidden md:inline">Interested in sponsoring? Contact us</span>
         </Button>
       </motion.div>
     </section>

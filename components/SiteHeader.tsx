@@ -68,8 +68,10 @@ export function SiteHeader() {
           />
         </div>
 
-        {/* Sponsor us + Apply - right; canonical CTA pills in both nav states */}
-        <div className="relative z-[2] flex shrink-0 items-center gap-1 md:gap-2">
+        {/* Sponsor us + Apply - right; canonical CTA pills in both nav states.
+            On mobile these move into the hero below the date line, so the
+            header stays logo + MLH badge only. */}
+        <div className="relative z-[2] hidden shrink-0 items-center gap-1 md:flex md:gap-2">
           <Button
             href="#sponsors"
             variant="parchment"

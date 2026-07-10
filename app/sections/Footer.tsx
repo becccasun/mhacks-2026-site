@@ -9,8 +9,8 @@ import { asset } from "@/lib/asset";
 const LINKS = [
   { label: "About", href: "#about" },
   { label: "Sponsors", href: "#sponsors" },
+  { label: "Timeline", href: "#timeline" },
   { label: "FAQ", href: "#faq" },
-  { label: "Social Media", href: "#social" },
   { label: "Contact", href: "mailto:hello@mhacks.org" },
 ];
 

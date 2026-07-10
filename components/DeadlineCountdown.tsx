@@ -11,11 +11,26 @@ import { getNextDeadline, getTimeParts } from "@/lib/deadlines";
  */
 export function DeadlineCountdown({ className }: { className?: string }) {
   const [now, setNow] = useState<Date | null>(null);
+  // Typewriter entrance: characters revealed one by one on mount, then the
+  // timer just ticks in place.
+  const [typed, setTyped] = useState(0);
 
   useEffect(() => {
     setNow(new Date());
     const id = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(id);
+    const typer = setInterval(() => {
+      setTyped((c) => {
+        if (c >= 80) {
+          clearInterval(typer);
+          return c;
+        }
+        return c + 1;
+      });
+    }, 24);
+    return () => {
+      clearInterval(id);
+      clearInterval(typer);
+    };
   }, []);
 
   const next = now ? getNextDeadline(now) : null;
@@ -27,18 +42,21 @@ export function DeadlineCountdown({ className }: { className?: string }) {
 
   const t = getTimeParts(new Date(next.date), now);
   const pad = (n: number) => String(n).padStart(2, "0");
+  const full = `${next.countdownLabel} in ${t.days}d ${pad(t.hours)}h ${pad(t.minutes)}m ${pad(t.seconds)}s`;
 
   return (
     <div
       role="timer"
       aria-label={`${next.countdownLabel} in ${t.days} days, ${t.hours} hours, ${t.minutes} minutes`}
-      className={`inline-flex items-center rounded-pill border border-white/40 bg-[rgba(24,24,24,0.5)] px-3 py-1.5 backdrop-blur-sm md:px-4 ${className ?? ""}`}
+      // backdrop-blur only at md+: repainting a blurred backdrop every tick
+      // made the pill stutter on phones.
+      className={`inline-flex items-center rounded-pill border border-white/40 bg-[rgba(24,24,24,0.55)] px-3 py-1.5 md:bg-[rgba(24,24,24,0.5)] md:px-4 md:backdrop-blur-sm ${className ?? ""}`}
     >
       <span
         className="font-mono text-[10px] uppercase tracking-[0.12em] text-[#f2f2f2] md:text-[11px] md:tracking-[0.18em]"
         style={{ fontVariantNumeric: "tabular-nums" }}
       >
-        {next.countdownLabel} in {t.days}d {pad(t.hours)}h {pad(t.minutes)}m {pad(t.seconds)}s
+        {full.slice(0, typed)}
       </span>
     </div>
   );

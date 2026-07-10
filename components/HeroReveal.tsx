@@ -228,11 +228,8 @@ export function HeroReveal({
       {/* Dark blurred veil — painted once, never repaints on cursor moves */}
       <div className="absolute inset-0 isolate overflow-hidden">
         <div
-          className="absolute -inset-[12%]"
-          style={{
-            filter: "blur(22px) brightness(0.82) saturate(1.12) contrast(1.04)",
-            transform: "translateZ(0)",
-          }}
+          className="absolute -inset-[12%] [filter:blur(7px)_brightness(0.84)_saturate(1.1)] md:[filter:blur(22px)_brightness(0.82)_saturate(1.12)_contrast(1.04)]"
+          style={{ transform: "translateZ(0)" }}
         >
           {/* Crossfade between backdrop variants: the outgoing image stays
               mounted and fades under the incoming one */}

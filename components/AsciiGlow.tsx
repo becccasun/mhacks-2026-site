@@ -29,19 +29,19 @@ interface Glyph {
   star: boolean; // bigger feature star vs. background dust
 }
 
-function buildField(w: number, h: number): Glyph[] {
+function buildField(w: number, h: number, cell: number, density: number): Glyph[] {
   const glyphs: Glyph[] = [];
-  const cols = Math.ceil(w / CELL);
-  const rows = Math.ceil(h / CELL);
+  const cols = Math.ceil(w / cell);
+  const rows = Math.ceil(h / cell);
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
-      if (Math.random() > DENSITY) continue;
+      if (Math.random() > density) continue;
       // Mostly small dust, ~1 in 4 are proper stars.
       const star = Math.random() < 0.28;
       const pool = star ? STAR_GLYPHS : SMALL_GLYPHS;
       glyphs.push({
-        x: c * CELL + CELL / 2 + (Math.random() - 0.5) * CELL * 0.8,
-        y: r * CELL + CELL / 2 + (Math.random() - 0.5) * CELL * 0.8,
+        x: c * cell + cell / 2 + (Math.random() - 0.5) * cell * 0.8,
+        y: r * cell + cell / 2 + (Math.random() - 0.5) * cell * 0.8,
         char: pool[Math.floor(Math.random() * pool.length)],
         size: star ? 18 + Math.random() * 14 : 12 + Math.random() * 6,
         phase: Math.random() * Math.PI * 2,
@@ -56,7 +56,17 @@ function buildField(w: number, h: number): Glyph[] {
   return glyphs.sort((a, b) => a.size - b.size);
 }
 
-export function AsciiGlow({ className }: { className?: string }) {
+export function AsciiGlow({
+  className,
+  cell = CELL,
+  density = DENSITY,
+}: {
+  className?: string;
+  /** px between glyph centers — smaller = denser field */
+  cell?: number;
+  /** fraction of cells holding a glyph */
+  density?: number;
+}) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -139,7 +149,7 @@ export function AsciiGlow({ className }: { className?: string }) {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.round(rect.width * dpr);
       canvas.height = Math.round(rect.height * dpr);
-      glyphs = buildField(rect.width, rect.height);
+      glyphs = buildField(rect.width, rect.height, cell, density);
       if (reduced) draw(1.2); // single static frame
     };
 
@@ -168,7 +178,7 @@ export function AsciiGlow({ className }: { className?: string }) {
       window.removeEventListener("resize", resize);
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, []);
+  }, [cell, density]);
 
   return (
     <canvas

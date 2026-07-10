@@ -62,7 +62,7 @@ export function Faq() {
       ref={ref}
       id="faq"
       data-nav-theme="light"
-      className="relative z-[7] -mt-14 md:-mt-20 min-h-screen rounded-t-[40px] md:rounded-t-[48px] bg-parchment px-6 md:px-[8vw] pt-24 pb-32 md:pt-32 md:pb-[260px]"
+      className="relative z-[8] -mt-14 md:-mt-20 min-h-screen rounded-t-[40px] md:rounded-t-[48px] bg-[#FBFAF4] px-6 md:px-[8vw] pt-24 pb-32 md:pt-32 md:pb-[260px]"
       style={{
         backgroundImage: "radial-gradient(rgba(58,74,38,0.16) 1px, transparent 1.4px)",
         backgroundSize: "26px 26px",
@@ -76,9 +76,17 @@ export function Faq() {
             className="font-display font-medium text-moss-700"
             style={{ fontSize: "clamp(30px, 4vw, 48px)", lineHeight: 1.15, letterSpacing: "-0.015em" }}
           >
-            <SplitReveal as="span" className="block">
-              {"Frequently Asked Questions"}
-            </SplitReveal>
+            <span className="flex flex-wrap items-center gap-3">
+              <SplitReveal as="span" className="block">
+                {"Frequently Asked Questions"}
+              </SplitReveal>
+              <span
+                aria-hidden
+                className="font-mono text-[0.42em] tracking-[0.08em] text-moss-500"
+              >
+                {"°❀⋆"}
+              </span>
+            </span>
           </h2>
 
           {/* Decorative vertical polaroids pinned between heading and contact.
@@ -177,7 +185,7 @@ export function Faq() {
           own slow sway. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute bottom-[150px] right-[8vw] hidden items-end gap-12 md:flex"
+        className="pointer-events-none absolute right-2 top-4 flex origin-top-right scale-[0.38] items-end gap-8 md:bottom-[150px] md:right-[8vw] md:top-auto md:origin-bottom-right md:scale-100 md:gap-12"
       >
         {/* Species tag planted at the base of the trio */}
         <SpeciesLabel
@@ -185,7 +193,7 @@ export function Faq() {
           species="Iris lacustris"
           status="native · state wildflower"
           rotate={0}
-          className="absolute -left-[260px] bottom-[28px] flex"
+          className="absolute -left-[260px] bottom-[28px] hidden md:flex"
         />
         {violets.map((v) => (
           <motion.div

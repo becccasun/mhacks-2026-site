@@ -136,9 +136,17 @@ export function About() {
             className="font-display font-medium text-moss-700"
             style={{ fontSize: "clamp(30px, 4vw, 48px)", lineHeight: 1.05, letterSpacing: "-0.015em" }}
           >
-            <SplitReveal as="span" className="block">
-              {"About MHacks"}
-            </SplitReveal>
+            <span className="flex items-center justify-center gap-3">
+              <SplitReveal as="span" className="block">
+                {"About MHacks"}
+              </SplitReveal>
+              <span
+                aria-hidden
+                className="font-mono text-[0.42em] tracking-[0.08em] text-moss-500"
+              >
+                {".☘︎ ݁˖"}
+              </span>
+            </span>
           </h2>
 
           <motion.p
