@@ -62,7 +62,23 @@ export function FlowerStamps({ tone = "light" }: { tone?: "light" | "dark" }) {
     const host = overlay?.parentElement;
     if (!host) return;
 
-    const onClick = (e: MouseEvent) => {
+    // Pointer-based tap detection instead of `click`: mobile browsers don't
+    // always synthesize clicks for taps on non-interactive areas, and this
+    // treats mouse and touch identically while ignoring scroll gestures.
+    let down: { x: number; y: number; t: number; id: number } | null = null;
+
+    const onDown = (e: PointerEvent) => {
+      if (!e.isPrimary || (e.pointerType === "mouse" && e.button !== 0)) return;
+      down = { x: e.clientX, y: e.clientY, t: performance.now(), id: e.pointerId };
+    };
+
+    const onUp = (e: PointerEvent) => {
+      if (!down || e.pointerId !== down.id) return;
+      const moved = Math.hypot(e.clientX - down.x, e.clientY - down.y);
+      const held = performance.now() - down.t;
+      down = null;
+      // A scroll/drag or long-press isn't a stamp request.
+      if (moved > 12 || held > 600) return;
       // Don't stamp over real interactions (nav, accordion toggles, links…).
       const target = e.target as HTMLElement | null;
       if (target?.closest("a, button, [role='button'], input, textarea, select")) return;
@@ -83,8 +99,12 @@ export function FlowerStamps({ tone = "light" }: { tone?: "light" | "dark" }) {
       ]);
     };
 
-    host.addEventListener("click", onClick);
-    return () => host.removeEventListener("click", onClick);
+    host.addEventListener("pointerdown", onDown);
+    host.addEventListener("pointerup", onUp);
+    return () => {
+      host.removeEventListener("pointerdown", onDown);
+      host.removeEventListener("pointerup", onUp);
+    };
   }, [tone]);
 
   return (

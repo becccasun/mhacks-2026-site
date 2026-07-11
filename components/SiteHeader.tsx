@@ -69,20 +69,22 @@ export function SiteHeader() {
         </div>
 
         {/* Sponsor us + Apply - right; canonical CTA pills in both nav states.
-            On mobile these move into the hero below the date line, so the
-            header stays logo + MLH badge only. */}
-        <div className="relative z-[2] hidden shrink-0 items-center gap-1 md:flex md:gap-2">
-          <Button
-            href="#sponsors"
-            variant="parchment"
-            size="md"
-            onClick={(e) => {
-              e.preventDefault();
-              scrollToHash("#sponsors");
-            }}
-          >
-            Sponsor us
-          </Button>
+            Mobile keeps Apply in the bar (persistent CTA); Sponsor us joins
+            at md+ and also lives in the hero stack on small screens. */}
+        <div className="relative z-[2] flex shrink-0 items-center gap-1 md:gap-2">
+          <div className="hidden md:block">
+            <Button
+              href="#sponsors"
+              variant="parchment"
+              size="md"
+              onClick={(e) => {
+                e.preventDefault();
+                scrollToHash("#sponsors");
+              }}
+            >
+              Sponsor us
+            </Button>
+          </div>
           <Button href="#apply" variant="parchment" size="md">
             Apply
           </Button>

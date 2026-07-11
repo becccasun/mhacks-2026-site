@@ -13,7 +13,7 @@ export function MlhBadge() {
       target="_blank"
       rel="noreferrer"
       data-cursor="hover"
-      className="absolute top-0 z-[20] block w-[9%] min-w-[48px] max-w-[100px] right-4 md:left-[calc(clamp(110px,9vw,140px)+50px)] md:right-auto"
+      className="absolute top-0 z-[20] block w-[9%] min-w-[48px] max-w-[100px] right-[124px] md:left-[calc(clamp(110px,9vw,140px)+50px)] md:right-auto"
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img

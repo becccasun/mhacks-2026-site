@@ -53,7 +53,7 @@ Each item is a "same shape, swap the source" change. The files carry
 
 | # | What | Where | Change |
 |---|------|-------|--------|
-| 1 | Application portal link | `components/SiteHeader.tsx:83` (also the retired `app/sections/Timeline.tsx:153`) | Replace placeholder `href="#apply"` with the real portal URL |
+| 1 | Application portal link | grep `"#apply"` — `components/SiteHeader.tsx` (header pill), `app/sections/Hero.tsx` (mobile hero CTA), plus the retired `app/sections/Timeline.tsx` | Replace placeholder `href="#apply"` with the real portal URL in all spots |
 | 2 | Deadlines / countdown / schedule | `lib/deadlines.ts` | Replace the `DEADLINES` constant with fetched data of the same shape; the hero countdown pill **and** the Timeline schedule section (`app/sections/Schedule.tsx`) read only this array. Dates are ISO 8601 with explicit Eastern offsets |
 | 3 | Instagram feed | `lib/socials.ts` | The social-gallery section was replaced by the Timeline schedule and no longer exists in `app/page.tsx`; this data module (and `/public/social`) remains if it's rebuilt. If used: replace `SOCIAL_POSTS` with Instagram Graph API data (same shape), keep images self-hosted — IG CDN URLs expire |
 | 4 | Email signup | `components/EmailSignup.tsx:20` | `TODO(backend)`: POST the address to the mailing-list provider; surface errors in the existing submitted state. Note: the newsletter section (`app/sections/StayInTheLoop.tsx`) is built but not currently mounted in `app/page.tsx` |
@@ -86,7 +86,11 @@ stacked-sheets scroll effect).
 at the default macOS path and the dev server on :3000):
 
 - `shot.mjs "#section" out.png [scrollOffset]` — single-section screenshot
+- `shot-one-mobile.mjs out.png [scrollOffset]` — single mobile screenshot
 - `shot-mobile.mjs outDir` — full-page scroll-through at iPhone size
+- `shot-widths.mjs outDir` — renders 9 widths and audits element overlaps +
+  text overflow programmatically (the responsive regression net)
 - `shot-hero-variants.mjs outDir` — clicks the hero's leaf/flower/cloud
   backdrop switcher and captures each
-- `capture.mjs` — original multi-section sweep
+- `capture.mjs` / `shot-batch.mjs` / `shot-footer.mjs` / `shot-cursor.mjs` /
+  `shot-mobile-spots.mjs` — assorted section sweeps used during development

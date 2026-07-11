@@ -15,12 +15,17 @@ The marketing site for the University of Michigan's flagship hackathon, MHacks 2
 ## Local development
 
 ```bash
-cd site
-npm install --ignore-scripts     # --ignore-scripts avoids an fsevents postinstall issue on this machine; safe for Next
+npm install
 npm run dev
 ```
 
 Visit http://localhost:3000.
+
+> **Handing off / deploying?** Read [HANDOFF.md](./HANDOFF.md) — deployment
+> options, the backend integration checklist, and repo conventions. The live
+> demo deploys from `main` via GitHub Actions
+> (`.github/workflows/deploy.yml`) to
+> https://becccasun.github.io/mhacks-2026-site/.
 
 Optional scripts:
 
@@ -38,8 +43,6 @@ Tokens live in two places:
 - `tailwind.config.ts` — semantic color aliases (`moss`, `cream`, `bloom`, `sun`, `leaf`), radii, shadows (`e-1`–`e-4`), and font families.
 - `lib/tokens.ts` — TypeScript-typed color/radius/duration/motion presets for use inside Framer configs.
 
-Refer to the sibling [`../design-system.html`](../design-system.html) for the canonical brand kit.
-
 ## Directory layout
 
 ```
@@ -47,10 +50,12 @@ app/
   layout.tsx            root layout, fonts, SmoothScroll + Cursor
   page.tsx              section composition
   globals.css           tokens + resets
-  sections/             Hero, About, Sponsors, FAQ, Footer
-components/             SmoothScroll, Cursor, AsciiCanvas, PillNav, ...
-lib/                    tokens.ts, hooks (useMagnetic, useInView)
-public/                 hero/ logos/ cursors/ textures/ ascii/
+  sections/             Hero, About, Sponsors, Schedule (Timeline), Faq, Footer
+                        (Timeline.tsx + StayInTheLoop.tsx are retired but kept)
+components/             SmoothScroll, Cursor, AsciiGlow, PillNav, Button, ...
+lib/                    tokens.ts, deadlines.ts, asset.ts, hooks
+public/                 hero/ about/ logos/ social/ footer/ ...
+scripts/                puppeteer visual-QA helpers (see HANDOFF.md)
 ```
 
 ## Motion presets
@@ -75,6 +80,6 @@ import { motion as preset } from "@/lib/tokens";
 
 ## Handoff notes for engineering
 
-- All sections are React components with typed props; a future backend can pass FAQ items, sponsor tier data, and stat numbers via server components.
-- Fonts are loaded via `next/font/google`. To swap in local Red Hat Display OTF files, use `next/font/local` inside `app/layout.tsx`.
-- Sponsor tier data is currently a placeholder array in `app/sections/Sponsors.tsx`. Replace with confirmed sponsor logos when available.
+See **[HANDOFF.md](./HANDOFF.md)** for the authoritative checklist: hosting
+options (Vercel vs. static export), the base-path mechanism, every backend
+integration seam with file references, and the known local-dev gotcha.
