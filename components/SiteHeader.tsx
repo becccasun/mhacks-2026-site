@@ -1,7 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 import { Logo } from "@/components/Logo";
+import { asset } from "@/lib/asset";
 import { PillNav } from "@/components/PillNav";
 import { Button } from "@/components/Button";
 import { useScrollDirection } from "@/lib/useScrollDirection";
@@ -14,6 +16,9 @@ export function SiteHeader() {
   // On the hero: transparent header, glass pills, cream text. Past it: one
   // frosted bar across the whole nav, pills removed, dark text + dark logo.
   const frosted = useNavTheme() !== "hero";
+  // On subpages (/how-to-mcp) the CTAs route back to the home page's
+  // sections; raw <a> hrefs need the deploy base path prefixed by hand.
+  const onHome = usePathname() === "/";
 
   return (
     <motion.header
@@ -74,10 +79,11 @@ export function SiteHeader() {
         <div className="relative z-[2] flex shrink-0 items-center gap-1 md:gap-2">
           <div className="hidden md:block">
             <Button
-              href="#sponsors"
+              href={onHome ? "#sponsors" : asset("/#sponsors")}
               variant="parchment"
               size="md"
               onClick={(e) => {
+                if (!onHome) return;
                 e.preventDefault();
                 scrollToHash("#sponsors");
               }}
@@ -85,7 +91,7 @@ export function SiteHeader() {
               Sponsor us
             </Button>
           </div>
-          <Button href="#apply" variant="parchment" size="md">
+          <Button href={onHome ? "#apply" : asset("/#apply")} variant="parchment" size="md">
             Apply
           </Button>
         </div>

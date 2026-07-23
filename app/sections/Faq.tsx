@@ -62,7 +62,7 @@ export function Faq() {
       ref={ref}
       id="faq"
       data-nav-theme="light"
-      className="relative z-[8] -mt-14 md:-mt-20 min-h-screen rounded-t-[40px] md:rounded-t-[48px] bg-[#FBFAF4] px-6 md:px-[8vw] pt-24 pb-32 md:pt-32 md:pb-[260px]"
+      className="relative z-[9] -mt-14 md:-mt-20 min-h-screen rounded-t-[40px] md:rounded-t-[48px] bg-[#FBFAF4] px-6 md:px-[8vw] pt-24 pb-32 md:pt-32 md:pb-[260px]"
       style={{
         backgroundImage: "radial-gradient(rgba(58,74,38,0.16) 1px, transparent 1.4px)",
         backgroundSize: "26px 26px",

@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, useReducedMotion } from "framer-motion";
 import { Logo } from "@/components/Logo";
 import { SpeciesLabel } from "@/components/SpeciesLabel";
@@ -10,6 +12,7 @@ const LINKS = [
   { label: "About", href: "#about" },
   { label: "Sponsors", href: "#sponsors" },
   { label: "Timeline", href: "#timeline" },
+  { label: "Agent", href: "/how-to-mcp" },
   { label: "FAQ", href: "#faq" },
   { label: "Contact", href: "mailto:hello@mhacks.org" },
 ];
@@ -27,6 +30,9 @@ const GRAIN =
  */
 export function Footer() {
   const reduced = useReducedMotion();
+  // The footer also renders on /how-to-mcp — from there, hash links route
+  // back to the home page's section instead of a dead in-page anchor.
+  const onHome = usePathname() === "/";
   return (
     <footer
       data-nav-theme="dark"
@@ -136,20 +142,20 @@ export function Footer() {
             aria-label="Footer"
           >
             {LINKS.map((l) => (
-              <a
+              <Link
                 key={l.href}
-                href={l.href}
+                href={l.href.startsWith("#") && !onHome ? `/${l.href}` : l.href}
                 data-cursor="hover"
                 className="opacity-85 transition-opacity hover:opacity-100 hover:underline underline-offset-4"
                 onClick={(e) => {
-                  if (l.href.startsWith("#")) {
+                  if (l.href.startsWith("#") && onHome) {
                     e.preventDefault();
                     scrollToHash(l.href);
                   }
                 }}
               >
                 {l.label}
-              </a>
+              </Link>
             ))}
           </nav>
 

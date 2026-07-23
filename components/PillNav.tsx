@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { scrollToHash } from "@/lib/scroll";
@@ -23,10 +24,14 @@ const DEFAULT_ITEMS: Item[] = [
   { label: "About", href: "#about" },
   { label: "Sponsors", href: "#sponsors" },
   { label: "Timeline", href: "#timeline" },
+  { label: "Agent", href: "/how-to-mcp" },
   { label: "FAQ", href: "#faq" },
 ];
 
 export function PillNav({ items = DEFAULT_ITEMS, className, variant = "light", style }: Props) {
+  // Off the home page, hash items become real routes back to the section
+  // ("/#about") instead of dead in-page anchors.
+  const onHome = usePathname() === "/";
   return (
     <motion.nav
       initial={{ opacity: 0, y: -12 }}
@@ -51,10 +56,10 @@ export function PillNav({ items = DEFAULT_ITEMS, className, variant = "light", s
       {items.map((it) => (
         <Link
           key={it.href}
-          href={it.href}
+          href={it.href.startsWith("#") && !onHome ? `/${it.href}` : it.href}
           data-cursor="hover"
           onClick={(e) => {
-            if (it.href.startsWith("#")) {
+            if (it.href.startsWith("#") && onHome) {
               e.preventDefault();
               scrollToHash(it.href);
             }
