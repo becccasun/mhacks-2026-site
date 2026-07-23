@@ -38,11 +38,11 @@ const redHatMono = Red_Hat_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://mhacks.org"),
-  title: "MHacks 2026 — Digital Garden",
+  title: "MHacks 2026 · Digital Garden",
   description:
     "MHacks is the University of Michigan's flagship hackathon. 24 hours of building at the intersection of nature and technology. Ann Arbor, Fall 2026.",
   openGraph: {
-    title: "MHacks 2026 — Digital Garden",
+    title: "MHacks 2026 · Digital Garden",
     description:
       "The University of Michigan's flagship hackathon. Build something that grows.",
     type: "website",

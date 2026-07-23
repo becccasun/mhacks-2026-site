@@ -1,7 +1,10 @@
 "use client";
 
+import { useRef } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { SplitReveal } from "@/components/SplitReveal";
 import { FlowerStamps } from "@/components/FlowerStamps";
+import { SpeciesLabel } from "@/components/SpeciesLabel";
 import { AgentTerminal } from "@/components/AgentTerminal";
 import { CommandBlock } from "@/components/CopyBlock";
 import { Button } from "@/components/Button";
@@ -14,13 +17,56 @@ import { asset } from "@/lib/asset";
  * between the Timeline and FAQ sheets; the CTA leads to /how-to-mcp.
  */
 export function Agent() {
+  const ref = useRef<HTMLElement | null>(null);
+  const reduced = useReducedMotion();
+
+  // Black-eyed Susan garland: rooted offscreen left, drifts right into place
+  // as the sheet scrolls in (mirror of the Schedule garland's entrance).
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "start start"],
+  });
+  const garlandX = useTransform(scrollYProgress, [0.08, 0.92], ["-62vw", "0vw"]);
+
   return (
     <section
+      ref={ref}
       id="agent"
       data-nav-theme="light"
       className="relative z-[8] -mt-14 md:-mt-20 flex min-h-screen flex-col justify-center overflow-hidden rounded-t-[40px] md:rounded-t-[48px] bg-parchment px-6 py-24 md:px-[8vw] md:py-32"
     >
       <FlowerStamps tone="light" />
+
+      {/* Black-eyed Susan garland along the top — full-bleed, in flow */}
+      <motion.div
+        aria-hidden
+        style={{ x: reduced ? 0 : garlandX }}
+        className="pointer-events-none relative -mx-6 mb-8 md:-mx-[8vw] md:mb-12"
+      >
+        {/* Idle waver anchored toward the left, where the stem roots offscreen */}
+        <motion.div
+          animate={
+            reduced ? undefined : { rotate: [-0.9, 1.1, -0.9], y: [-6, 7, -6] }
+          }
+          transition={{ duration: 6.1, repeat: Infinity, ease: "easeInOut" }}
+          style={{ transformOrigin: "12% 50%" }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={asset("/agent/garland-susan.webp")}
+            alt=""
+            draggable={false}
+            className="w-[82%]"
+          />
+        </motion.div>
+        <SpeciesLabel
+          name="Black-Eyed Susan"
+          species="Rudbeckia hirta"
+          status="native wildflower"
+          rotate={0}
+          className="absolute left-[calc(36%+540px)] top-[calc(16%-8px)] hidden min-w-[215px] md:flex"
+        />
+      </motion.div>
 
       <div className="grid items-center gap-14 md:grid-cols-2">
         <div className="flex flex-col gap-8">

@@ -26,7 +26,7 @@ export function EmailSignup({ className }: { className?: string }) {
       <div className={`flex items-center gap-3 text-cream ${className ?? ""}`}>
         <pre aria-hidden className="font-mono text-[9px] leading-[1.15]">{"\\ | /\n-(*)-\n/ | \\"}</pre>
         <span className="font-mono text-[14px] tracking-[0.06em]">
-          You&rsquo;re on the list — see you in October.
+          You&rsquo;re on the list. See you in October.
         </span>
       </div>
     );

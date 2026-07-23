@@ -241,7 +241,7 @@ export function Hero() {
               transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1], delay: 0.3 }}
             >
               <span className="block text-cream text-center lg:text-right text-[11px] md:text-[13px] lg:text-[15px] font-medium uppercase tracking-[0.18em] lg:tracking-[0.3em] [text-shadow:0_1px_12px_rgba(20,30,10,0.55)]">
-                October 3—4, 2026 · Ann Arbor, Michigan
+                October 3–4, 2026 · Ann Arbor, Michigan
               </span>
             </motion.div>
           </motion.div>

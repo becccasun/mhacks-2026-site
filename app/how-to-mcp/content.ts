@@ -7,7 +7,7 @@
 export const SERVER_URL = "https://www.mhacks.org/mcp";
 
 export const INTRO =
-  "MHacks has an MCP server that lets you apply through Claude, Codex, or any other MCP-capable agent instead of filling out the web form by hand. Your agent can read the application schema, save a draft, ask you questions, upload your resume, and submit — all tied to your real, logged-in MHacks account.";
+  "MHacks has an MCP server that lets you apply through Claude, Codex, or any other MCP-capable agent instead of filling out the web form by hand. Your agent can read the application schema, save a draft, ask you questions, upload your resume, and submit, all tied to your real, logged-in MHacks account.";
 
 export const PROMPTS = [
   {

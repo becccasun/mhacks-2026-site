@@ -3,7 +3,7 @@ import { HowToMcp } from "./HowToMcp";
 import { Footer } from "../sections/Footer";
 
 export const metadata: Metadata = {
-  title: "How to MCP — MHacks 2026",
+  title: "How to MCP · MHacks 2026",
   description:
     "Connect Claude, Codex, or any MCP-capable agent to the MHacks MCP server and apply straight from your terminal.",
 };

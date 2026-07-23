@@ -78,7 +78,7 @@ function ClientInstructions({ client }: { client: ClientId }) {
           <Step n={1}>Go to Settings → Connectors → Add custom connector.</Step>
           <Step n={2}>Paste the server URL above.</Step>
           <Step n={3}>
-            Claude will open a login page — sign in with your email (MHacks uses a one-time code
+            Claude will open a login page. Sign in with your email (MHacks uses a one-time code
             sent to your inbox, no password).
           </Step>
           <Step n={4}>
@@ -95,8 +95,8 @@ function ClientInstructions({ client }: { client: ClientId }) {
         <CommandBlock>{`claude mcp add --transport http mhacks ${SERVER_URL}`}</CommandBlock>
         <p>
           Then inside a session, run <code className="font-mono text-[13px]">/mcp</code>, select{" "}
-          <code className="font-mono text-[13px]">mhacks</code>, and authenticate — same email
-          login + approval as Claude.ai.
+          <code className="font-mono text-[13px]">mhacks</code>, and authenticate with the same
+          email login and approval as Claude.ai.
         </p>
       </div>
     );
@@ -168,7 +168,7 @@ function ClientTabs() {
 const AUTH_NOTES: { lead: string; body: React.ReactNode }[] = [
   {
     lead: "Your identity comes from your login, not from anything you tell the agent.",
-    body: "Whatever email you authenticate with is the account the application is tied to — an agent can't submit on someone else's behalf.",
+    body: "Whatever email you authenticate with is the account the application is tied to. An agent can't submit on someone else's behalf.",
   },
   {
     lead: "Submission is final.",
@@ -176,14 +176,14 @@ const AUTH_NOTES: { lead: string; body: React.ReactNode }[] = [
   },
   {
     lead: "You'll be asked to explicitly agree",
-    body: "to the MLH Code of Conduct, Privacy Policy, and communications terms before submission — your agent should read these to you and ask for a clear yes/no, not assume.",
+    body: "to the MLH Code of Conduct, Privacy Policy, and communications terms before submission. Your agent should read these to you and ask for a clear yes/no, not assume.",
   },
   {
     lead: "Resume upload usually won't happen through the agent.",
     body: (
       <>
-        Uploading requires the agent to make its own HTTP request with the file&rsquo;s raw bytes
-        — attaching a PDF to the chat only lets the agent read it. Coding-agent clients with their
+        Uploading requires the agent to make its own HTTP request with the file&rsquo;s raw
+        bytes. Attaching a PDF to the chat only lets the agent read it. Coding-agent clients with their
         own network access (Claude Code, Codex, Cursor) can do this; standard Claude.ai / Claude
         Desktop chat can&rsquo;t, so expect your agent to tell you to upload your resume yourself
         at{" "}
@@ -233,7 +233,7 @@ function HumanMode() {
 
         <Rise delay={0.15} className="flex flex-col gap-2">
           <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-moss-700/50">
-            Server URL — use it exactly as written, in any client below
+            Server URL: use it exactly as written, in any client below
           </p>
           <CommandBlock emphasized>{SERVER_URL}</CommandBlock>
         </Rise>
@@ -286,8 +286,8 @@ function MachineMode() {
   return (
     <div className="flex flex-col gap-5">
       <p className="max-w-xl text-[15px] leading-relaxed text-moss-700/80">
-        Copy this markdown and paste it into your agent — Claude Code, Codex, or any MCP-capable
-        client. It has everything your agent needs to connect and apply; from there, just follow
+        Copy this markdown and paste it into your agent (Claude Code, Codex, or any MCP-capable
+        client). It has everything your agent needs to connect and apply; from there, just follow
         your agent&rsquo;s instructions.
       </p>
       <div

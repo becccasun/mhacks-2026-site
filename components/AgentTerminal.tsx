@@ -15,7 +15,7 @@ const LINES: Line[] = [
   { kind: "tool", text: "mhacks · save_application_draft" },
   {
     kind: "agent",
-    text: "Draft saved. I still need your school and t-shirt size — then we can review the MLH terms together before submitting.",
+    text: "Draft saved. I still need your school and t-shirt size. Then we can review the MLH terms together before submitting.",
   },
   { kind: "prompt" },
 ];
@@ -63,7 +63,7 @@ export function AgentTerminal({ className }: { className?: string }) {
           <span key={i} className="h-2.5 w-2.5 rounded-full bg-[#ebe4ce]/20" />
         ))}
         <span className="ml-2 font-mono text-[11px] tracking-[0.12em] text-[#ebe4ce]/45">
-          agent — {SERVER_URL.replace("https://", "")}
+          agent · {SERVER_URL.replace("https://", "")}
         </span>
       </div>
       <div className="flex flex-col gap-2.5 px-4 py-4 font-mono text-[12px] leading-relaxed sm:px-5 sm:text-[13px]">
