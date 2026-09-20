@@ -5,8 +5,48 @@ import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion
 import { SplitReveal } from "@/components/SplitReveal";
 import { Button } from "@/components/Button";
 import { FlowerStamps } from "@/components/FlowerStamps";
+import { Fireflies } from "@/components/Fireflies";
 import { SpeciesLabel } from "@/components/SpeciesLabel";
 import { asset } from "@/lib/asset";
+
+type Sponsor = { name: string; file: string; url: string };
+
+// Tiered by sponsorship level — each tier renders one size, top to bottom.
+const TIERS: { sponsors: Sponsor[]; height: string; gap: string }[] = [
+  {
+    height: "clamp(120px, 16vw, 220px)",
+    gap: "gap-8",
+    sponsors: [{ name: "Fetch.ai", url: "https://fetch.ai", file: "fetch-ai" }],
+  },
+  {
+    height: "clamp(84px, 10vw, 140px)",
+    gap: "gap-6 md:gap-10",
+    sponsors: [
+      { name: "Notability", url: "https://notability.com", file: "notability" },
+      { name: "FreeWILi", url: "https://freewili.com", file: "freewili" },
+      { name: "University of Michigan", url: "https://umich.edu", file: "umich" },
+    ],
+  },
+  {
+    height: "clamp(60px, 6.5vw, 92px)",
+    gap: "gap-4 md:gap-6",
+    sponsors: [
+      { name: "AWS", url: "https://aws.amazon.com", file: "aws" },
+      { name: "Capital One", url: "https://www.capitalone.com", file: "capital-one" },
+      { name: "Meta", url: "https://www.meta.com", file: "meta" },
+      { name: "D. E. Shaw & Co.", url: "https://www.deshaw.com", file: "de-shaw" },
+      { name: "SpaceX", url: "https://www.spacex.com", file: "spacex" },
+      { name: "Council", url: "https://www.council.co", file: "council" },
+      { name: "Huntington", url: "https://www.huntington.com", file: "huntington" },
+      { name: "Neon", url: "https://neon.com", file: "neon" },
+      { name: "Photon", url: "https://photon.com", file: "photon" },
+      { name: "Freesolo", url: "https://freesolo.io", file: "freesolo" },
+      { name: "TechSmith", url: "https://www.techsmith.com", file: "techsmith" },
+      { name: "SpacetimeDB", url: "https://spacetimedb.com", file: "spacetimedb" },
+      { name: "Stevens Capital Management", url: "https://www.scm-lp.com", file: "scm" },
+    ],
+  },
+];
 
 export function Sponsors() {
   const ref = useRef<HTMLElement | null>(null);
@@ -40,6 +80,8 @@ export function Sponsors() {
           backgroundSize: "96px 96px",
         }}
       />
+
+      <Fireflies />
 
       <FlowerStamps tone="dark" />
 
@@ -80,9 +122,32 @@ export function Sponsors() {
         />
       </motion.div>
 
-      <div className="relative mb-16 flex min-h-[120px] flex-wrap items-stretch justify-between gap-10">
+      <div className="relative mb-16 flex items-center justify-center gap-4 md:gap-8">
+        {/* Small blossom sprigs flanking the title, mirrored on the right */}
+        {(["left", "right"] as const).map((side) => (
+          <motion.img
+            key={side}
+            src={asset("/sponsors/branch.webp")}
+            alt=""
+            aria-hidden
+            draggable={false}
+            initial={{ opacity: 0, scaleX: side === "right" ? -1 : 1 }}
+            animate={{
+              opacity: 1,
+              scaleX: side === "right" ? -1 : 1,
+              rotate: reduced ? 0 : side === "left" ? [-2, 2, -2] : [2, -2, 2],
+            }}
+            transition={{
+              opacity: { duration: 1, delay: 0.3 },
+              rotate: { duration: 4.5, repeat: Infinity, ease: "easeInOut" },
+            }}
+            className={`pointer-events-none w-[110px] shrink-0 select-none md:w-[220px] ${
+              side === "right" ? "order-last" : ""
+            }`}
+          />
+        ))}
         <h2
-          className="self-start font-display font-medium text-cream"
+          className="font-display font-medium text-cream"
           style={{ fontSize: "clamp(30px, 4vw, 48px)", lineHeight: 1.05, letterSpacing: "-0.015em" }}
         >
           <span className="flex items-center gap-3">
@@ -97,15 +162,53 @@ export function Sponsors() {
             </span>
           </span>
         </h2>
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.2, 0.8, 0.2, 1] }}
-          viewport={{ once: true, amount: 0.5 }}
-          className="max-w-[480px] self-end text-[17px] leading-[1.6] text-[#dcd8c2]"
-        >
-          Our 2026 sponsor lineup is taking shape, check back soon.
-        </motion.p>
+      </div>
+
+      {/* Sticker wall — one row per tier, largest at the top */}
+      <div
+        data-no-stamp
+        className="relative mb-16 flex flex-col items-center gap-8 md:gap-12"
+      >
+        {TIERS.map((tier, t) => (
+          <div
+            key={t}
+            className={`flex flex-wrap items-center justify-center ${tier.gap}`}
+          >
+            {tier.sponsors.map((sp, i) => (
+              <motion.div
+                key={sp.file}
+                initial={{ opacity: 0, y: 16, rotate: i % 2 ? 1.5 : -1.5 }}
+                whileInView={{ opacity: 1, y: 0, rotate: 0 }}
+                transition={{
+                  duration: 0.7,
+                  delay: 0.05 * i,
+                  ease: [0.2, 0.8, 0.2, 1],
+                }}
+                viewport={{ once: true, amount: 0.4 }}
+                whileHover={reduced ? undefined : { scale: 1.04, rotate: i % 2 ? -1 : 1 }}
+                style={{ height: tier.height }}
+              >
+                <a
+                  href={sp.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${sp.name} (opens in a new tab)`}
+                  className="block h-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cream/70 rounded-md"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={asset(`/sponsors/${sp.file}.png`)}
+                    alt={sp.name}
+                    title={sp.name}
+                    loading="lazy"
+                    draggable={false}
+                    className="h-full w-auto select-none drop-shadow-[0_10px_24px_rgba(0,0,0,0.35)]"
+                  />
+                </a>
+              </motion.div>
+            ))}
+          </div>
+        ))}
       </div>
 
       <motion.div

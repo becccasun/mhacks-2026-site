@@ -81,7 +81,8 @@ export function FlowerStamps({ tone = "light" }: { tone?: "light" | "dark" }) {
       if (moved > 12 || held > 600) return;
       // Don't stamp over real interactions (nav, accordion toggles, links…).
       const target = e.target as HTMLElement | null;
-      if (target?.closest("a, button, [role='button'], input, textarea, select")) return;
+      // `data-no-stamp` lets a host opt a region out (e.g. sponsor logos).
+      if (target?.closest("a, button, [role='button'], input, textarea, select, [data-no-stamp]")) return;
 
       const r = host.getBoundingClientRect();
       const colors = tone === "dark" ? DARK_BG_COLORS : LIGHT_BG_COLORS;
