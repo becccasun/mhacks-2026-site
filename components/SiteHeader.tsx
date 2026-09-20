@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Logo } from "@/components/Logo";
 import { asset } from "@/lib/asset";
 import { PillNav } from "@/components/PillNav";
@@ -19,6 +19,7 @@ export function SiteHeader() {
   // On subpages (/how-to-mcp) the CTAs route back to the home page's
   // sections; raw <a> hrefs need the deploy base path prefixed by hand.
   const onHome = usePathname() === "/";
+  const router = useRouter();
 
   return (
     <motion.header
@@ -83,15 +84,24 @@ export function SiteHeader() {
               variant="parchment"
               size="md"
               onClick={(e) => {
-                if (!onHome) return;
                 e.preventDefault();
-                scrollToHash("#sponsors");
+                if (onHome) scrollToHash("#sponsors");
+                else router.push("/#sponsors");
               }}
             >
               Sponsor us
             </Button>
           </div>
-          <Button href={onHome ? "#apply" : asset("/#apply")} variant="parchment" size="md">
+          <Button
+            href={onHome ? "#apply" : asset("/#apply")}
+            variant="parchment"
+            size="md"
+            onClick={(e) => {
+              if (onHome) return;
+              e.preventDefault();
+              router.push("/#apply");
+            }}
+          >
             Apply
           </Button>
         </div>

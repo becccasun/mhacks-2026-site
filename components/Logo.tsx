@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { scrollToHash } from "@/lib/scroll";
 import { asset } from "@/lib/asset";
@@ -21,6 +22,10 @@ export function Logo({
   href = "#top",
   priority = false,
 }: Props) {
+  // Off the home page, hash targets don't exist — route back to the home
+  // page (with the page transition) instead of a dead in-page anchor.
+  const onHome = usePathname() === "/";
+
   const img = (
     <Image
       src={asset("/logos/mhacks-logo.png")}
@@ -45,11 +50,11 @@ export function Logo({
 
   return (
     <Link
-      href={href}
+      href={href.startsWith("#") && !onHome ? `/${href}` : href}
       aria-label="MHacks home"
       data-cursor="hover"
       onClick={(e) => {
-        if (href.startsWith("#")) {
+        if (href.startsWith("#") && onHome) {
           e.preventDefault();
           scrollToHash(href);
         }

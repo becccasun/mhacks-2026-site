@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import { useRouter } from "next/navigation";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { SplitReveal } from "@/components/SplitReveal";
 import { FlowerStamps } from "@/components/FlowerStamps";
@@ -19,6 +20,7 @@ import { asset } from "@/lib/asset";
 export function Agent() {
   const ref = useRef<HTMLElement | null>(null);
   const reduced = useReducedMotion();
+  const router = useRouter();
 
   // Black-eyed Susan garland: rooted offscreen left, drifts right into place
   // as the sheet scrolls in (mirror of the Schedule garland's entrance).
@@ -100,7 +102,15 @@ export function Agent() {
           </div>
 
           <div>
-            <Button href={asset("/how-to-mcp")} variant="cta" size="md">
+            <Button
+              href={asset("/how-to-mcp")}
+              variant="cta"
+              size="md"
+              onClick={(e) => {
+                e.preventDefault();
+                router.push("/how-to-mcp");
+              }}
+            >
               How to connect →
             </Button>
           </div>

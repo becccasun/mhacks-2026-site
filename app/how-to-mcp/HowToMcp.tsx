@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { AgentTerminal } from "@/components/AgentTerminal";
 import { CopyChip, CommandBlock } from "@/components/CopyBlock";
@@ -313,6 +313,12 @@ function MachineMode() {
  */
 export function HowToMcp() {
   const [mode, setMode] = useState<Mode>("human");
+
+  // This page always opens at the top, including back/forward navigation
+  // where the browser would otherwise restore a previous scroll position.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div data-nav-theme="light" className="relative">
